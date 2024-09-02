@@ -1,0 +1,29 @@
+{
+  "name": "letterboxd-scraper-toolkit",
+  "description": "A letterboxd scrapper for public data",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Maribel Hernandez",
+    "email": "hernandezfmb@gmail.com"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts"
+  },
+  "dependencies": {
+    "puppeteer": "^23.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
+  }
+}
