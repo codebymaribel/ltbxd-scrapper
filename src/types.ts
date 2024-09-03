@@ -1,11 +1,11 @@
 export interface UserProps {
   username: string;
-  typeOfList: "watchlist" | "films";
+  category: "watchlist" | "films";
 }
 
 export interface PosterProps {
   url: string;
-  alt: string | undefined;
+  alt: string;
 }
 
 export interface MetadataProps {
@@ -18,3 +18,7 @@ export type MergedMovieDataProps = {
   postersArray: PosterProps[];
   moviesMetadataArray: MetadataProps[];
 };
+
+export interface MovieObjectProps extends MetadataProps {
+moviePoster: PosterProps
+}
