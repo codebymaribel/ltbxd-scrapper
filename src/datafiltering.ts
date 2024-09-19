@@ -1,48 +1,59 @@
-import { Page } from "puppeteer";
-import { MergedMovieDataProps, MetadataProps, PosterProps } from "./types";
+import { MetadataProps } from "./types";
+import { clearNullElementsFromArray } from "./utils/sharedTools";
 
-export const moviesMetadataArray = async (page: Page) =>
-  await page.$$eval("div.film-poster", (filmsContainers) => {
-    const htmlContent: MetadataProps[] = [];
+const listScrapper = async ({page, posters}) => {
+  let moviesData;
 
-    filmsContainers.forEach((movieContainer: HTMLDivElement) => {
-      const movieID = movieContainer.getAttribute("data-film-id");
+  moviesData = await page.$$eval("div.film-poster", (moviesArray) => {
+    const moviesMetadataArray: MetadataProps[] = [];
+
+    moviesArray.forEach((movieContainer) => {
+      const movieID = movieContainer.getAttribute("data-film-id") || "";
       const movieName = movieContainer.getAttribute("data-film-name");
       const movieSlug = movieContainer.getAttribute("data-film-slug");
+      const moviePoster = movieContainer.querySelector("div > img") || null;
 
       if (!movieID || !movieName || !movieSlug) return;
 
-      htmlContent.push({
+      moviesMetadataArray.push({
         id: movieID,
         name: movieName,
         slug: movieSlug,
       });
     });
-    return htmlContent;
+
+    return moviesMetadataArray;
   });
 
-export const postersArray = async (page: Page) =>
-  await page.$$eval("div.film-poster > div > img", (posters) => {
-    const postersarray: PosterProps[] = [];
-    posters.forEach((poster) => {
-      postersarray.push({ url: poster.src, alt: poster.alt });
-    });
+  if (!posters) return clearNullElementsFromArray(moviesData);
 
-    return postersarray;
-  });
+  moviesData = await page.$$eval(
+    "div.film-poster > div > img",
+    (posters, moviesDataLocal) => {
+      const moviesWithPosters = posters.map((posterHTMLElement) => {
+        const src = posterHTMLElement.getAttribute("src");
+        const alt = posterHTMLElement.getAttribute("alt");
 
-export const moviesDataArray = ({
-  postersArray,
-  moviesMetadataArray,
-}: MergedMovieDataProps) =>
-  moviesMetadataArray.map((movieMetaObj: MetadataProps) => {
-    const { slug, name } = movieMetaObj;
+        const movieObj = moviesDataLocal.find(
+          ({ slug }) => src?.includes(slug) || alt?.includes(slug)
+        );
 
-    const moviePoster = postersArray.find(
-      ({ url, alt }) => url.includes(slug) || alt?.includes(name)
-    );
+        if (movieObj !== undefined && "name" in movieObj) {
+          return {
+            ...movieObj,
+            poster: {
+              src,
+              alt,
+            },
+          };
+        }
+      });
+      return moviesWithPosters;
+    },
+    moviesData
+  );
 
-    const watchlistMovieObj = { ...movieMetaObj, moviePoster };
+  return clearNullElementsFromArray(moviesData);
+};
 
-    return watchlistMovieObj;
-  });
+export {listScrapper}
