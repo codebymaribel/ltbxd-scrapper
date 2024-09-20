@@ -1,13 +1,13 @@
 import puppeteer from "puppeteer";
-import { UserQueryProps, MovieObjectProps } from "./types";
-import { LIST_TYPES, MAIN_URL } from "./config/constants";
-import { listScrapper } from "./datafiltering";
+import { LIST_TYPES, MAIN_URL } from "../config/constants";
+import { listScrapper } from "./scrapper/lists-scrapper";
+import { ListMovieWithPosterProps, UserQueryProps } from "@/types";
 
 /**
  * @description Returns an array of objects with the user's watchlist data
  * @param {String} username - Letterboxd username
  * @param {String} category - Content category (watchlist, films)
- * @returns {MovieObjectProps}  - An array of Objects with movies data
+ * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
 export const getUserList = async (user: UserQueryProps) => {
@@ -25,6 +25,7 @@ export const getUserList = async (user: UserQueryProps) => {
     let allDataCollected = false;
 
     while (!allDataCollected) {
+      
       await page.waitForSelector(".paginate-nextprev");
 
       const moviesArray = await listScrapper({ page, posters });

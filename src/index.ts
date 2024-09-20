@@ -1,6 +1,4 @@
-export * from './queryFunctions'
-export * from './types'
-import { getUserList } from './queryFunctions'
+import { getUserList } from './lists/lists'
 
 getUserList({
     username: 'maribelbhf',
