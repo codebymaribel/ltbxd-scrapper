@@ -5,13 +5,9 @@ import {
   handleLazyLoad,
   listScrapper,
   nextPageURL,
+  checkIfListExists,
 } from "./scrapper/lists-scrapper";
-import {
-  ListMovieWithPosterProps,
-  ListScrapperProps,
-  UserQueryProps,
-} from "@/types";
-import { wait } from "../utils/sharedTools";
+import { UserQueryProps } from "@/types";
 
 /**
  * @description Returns an array of objects with the user's watchlist data
@@ -21,11 +17,9 @@ import { wait } from "../utils/sharedTools";
  */
 
 export const getUserList = async (user: UserQueryProps) => {
-  const { username, category, options } = user;
-  const { posters = false } = options;
+  const { username, category } = user;
+  const posters = user.options?.posters || false;
   const listData: Object[] = [];
-
-  //TODO validar si tienes acceso a la pagina XD: if private, receive share URL
 
   try {
     const browser = await puppeteer.launch();
@@ -34,14 +28,18 @@ export const getUserList = async (user: UserQueryProps) => {
 
     await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES[category]}/`);
 
-    const nextPageExists = await isThereAnotherPage({ page });
+    const [listExistsOnPage, nextPageExists] = await Promise.all([
+      await checkIfListExists({ page }),
+      await isThereAnotherPage({ page }),
+    ]);
+
+    if (!listExistsOnPage) throw Error("No hay peliculas en este enlace");
 
     //Handle infinite scroll list
     if (!nextPageExists) {
       await handleLazyLoad({ page });
       const moviesArray = await listScrapper({ page, posters });
 
-     
       console.log("Number of movies in list: ", moviesArray.length);
       await browser.close();
 
@@ -52,11 +50,12 @@ export const getUserList = async (user: UserQueryProps) => {
 
     //Handle multiple page list
     while (!allDataCollected) {
-      const moviesArray = await listScrapper({ page, posters });
+      const [moviesArray, nextPage] = await Promise.all([
+        await listScrapper({ page, posters }),
+        await nextPageURL({ page }),
+      ]);
 
       listData.push(...moviesArray);
-
-      const nextPage = await nextPageURL({ page });
 
       if (!nextPage) {
         allDataCollected = true;

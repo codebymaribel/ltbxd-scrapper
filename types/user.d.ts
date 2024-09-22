@@ -1,9 +1,9 @@
 type QueryOptionsProps = {
-  posters: boolean;
+  posters?: boolean;
 };
 
 export interface UserQueryProps {
   username: string;
   category: "watchlist" | "films";
-  options: QueryOptionsProps;
+  options?: QueryOptionsProps;
 }
