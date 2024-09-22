@@ -34,6 +34,20 @@ export const getUserList = async (user: UserQueryProps) => {
 
     await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES[category]}/`);
 
+    const nextPageExists = await isThereAnotherPage({ page });
+
+    //Handle infinite scroll list
+    if (!nextPageExists) {
+      await handleLazyLoad({ page });
+      const moviesArray = await listScrapper({ page, posters });
+
+     
+      console.log("Number of movies in list: ", moviesArray.length);
+      await browser.close();
+
+      return moviesArray;
+    }
+
     let allDataCollected = false;
 
     //Handle multiple page list
