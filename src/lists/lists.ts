@@ -1,7 +1,17 @@
-import puppeteer from "puppeteer";
+import puppeteer, { Page } from "puppeteer";
 import { LIST_TYPES, MAIN_URL } from "../config/constants";
-import { listScrapper } from "./scrapper/lists-scrapper";
-import { ListMovieWithPosterProps, UserQueryProps } from "@/types";
+import {
+  isThereAnotherPage,
+  handleLazyLoad,
+  listScrapper,
+  nextPageURL,
+} from "./scrapper/lists-scrapper";
+import {
+  ListMovieWithPosterProps,
+  ListScrapperProps,
+  UserQueryProps,
+} from "@/types";
+import { wait } from "../utils/sharedTools";
 
 /**
  * @description Returns an array of objects with the user's watchlist data
@@ -15,6 +25,8 @@ export const getUserList = async (user: UserQueryProps) => {
   const { posters = false } = options;
   const listData: Object[] = [];
 
+  //TODO validar si tienes acceso a la pagina XD: if private, receive share URL
+
   try {
     const browser = await puppeteer.launch();
 
@@ -24,32 +36,20 @@ export const getUserList = async (user: UserQueryProps) => {
 
     let allDataCollected = false;
 
+    //Handle multiple page list
     while (!allDataCollected) {
-      
-      await page.waitForSelector(".paginate-nextprev");
-
       const moviesArray = await listScrapper({ page, posters });
 
       listData.push(...moviesArray);
 
-      const isLastPage = await page.evaluate(() => {
-        return !!document.querySelector(
-          ".paginate-nextprev.paginate-disabled > span.next"
-        ); // !! converts anything to boolean
-      });
+      const nextPage = await nextPageURL({ page });
 
-      if (isLastPage) {
+      if (!nextPage) {
         allDataCollected = true;
         break;
       }
 
-      const nextPageLink = await page.evaluate(() => {
-        const element = document.querySelector(".next");
-        const href = (element as HTMLAnchorElement).href;
-        return href;
-      });
-
-      await page.goto(nextPageLink, {
+      await page.goto(nextPage, {
         waitUntil: "networkidle0",
       });
 
