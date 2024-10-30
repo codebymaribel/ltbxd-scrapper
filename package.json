@@ -33,6 +33,12 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.2.0",
+    "@types/module-alias": "^2.0.4",
+    "module-alias": "^2.2.3"
+  },
+  "_moduleAliases": {
+    "@/helpers": "src/shared/function-helpers.ts",
+    "@/config": "src/config/constants.ts"
   }
 }

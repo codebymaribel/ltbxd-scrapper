@@ -1,16 +1,12 @@
-import puppeteer, { Page } from "puppeteer";
-import { LIST_TYPES, MAIN_URL } from "../config/constants";
-import {
-  isThereAnotherPage,
-  handleLazyLoad,
-  listScrapper,
-  nextPageURL,
-  checkIfListExists,
-} from "./scrapper/lists-scrapper";
+import puppeteer from "puppeteer";
+import { LIST_TYPES, MAIN_URL } from "@/config";
 import { UserQueryProps } from "@/types";
+import { checkIfListExists, listScrapper } from "./scrapper/list/functions";
+import { handleLazyLoad, isThereAnotherPage, nextPageURL } from "./scrapper/routes/functions";
+
 
 /**
- * @description Returns an array of objects with the user's watchlist data
+ * @description Returns an array of objects with the user's list data
  * @param {String} username - Letterboxd username
  * @param {String} category - Content category (watchlist, films)
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
