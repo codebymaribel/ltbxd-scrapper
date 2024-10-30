@@ -1,10 +1,23 @@
 import "module-alias/register";
-import { getUserList } from "./lists/lists";
+import getList from "./lists/lists";
 
-getUserList({
-  username: "maribelbhf",
-  category: "watchlist",
-  options: {
-    posters: true,
-  },
-});
+async function testFunction() {
+  const userwatchlist = await getList.watchlist({
+    username: "maribelbhf",
+    options: {
+      posters: true,
+    },
+  });
+
+  const publicList = await getList.listByTitle({
+    username: "maribelbhf",
+    listTitle: "Peliculitas para asustarnos de manera uteana v1.0",
+    options: {
+      posters: false,
+    },
+  });
+
+  console.log(publicList.data.length);
+}
+
+testFunction();

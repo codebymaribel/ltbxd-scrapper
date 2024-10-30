@@ -1,9 +1,17 @@
-type QueryOptionsProps = {
+type OptionsProps = {
   posters?: boolean;
 };
 
-export interface UserQueryProps {
+export interface UserListProps {
   username: string;
-  category: "watchlist" | "films";
-  options?: QueryOptionsProps;
+  options?: OptionsProps;
+}
+
+export interface ListByTitleProps extends UserListProps {
+  listTitle: string;
+}
+
+export interface ListByURLProps {
+  listURL: string;
+  options?: OptionsProps;
 }

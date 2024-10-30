@@ -1,9 +1,12 @@
 import puppeteer from "puppeteer";
-import { LIST_TYPES, MAIN_URL } from "@/config";
-import { UserQueryProps } from "@/types";
+import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
+import { ListByTitleProps, UserListProps } from "@/types";
 import { checkIfListExists, listScrapper } from "./scrapper/list/functions";
-import { handleLazyLoad, isThereAnotherPage, nextPageURL } from "./scrapper/routes/functions";
-
+import {
+  handleLazyLoad,
+  isThereAnotherPage,
+  nextPageURL,
+} from "./scrapper/routes/functions";
 
 /**
  * @description Returns an array of objects with the user's list data
@@ -12,9 +15,9 @@ import { handleLazyLoad, isThereAnotherPage, nextPageURL } from "./scrapper/rout
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
-export const getUserList = async (user: UserQueryProps) => {
-  const { username, category } = user;
-  const posters = user.options?.posters || false;
+const watchlist = async (user: UserListProps) => {
+  const { username } = user;
+  const posters = user.options?.posters || true;
   const listData: Object[] = [];
 
   try {
@@ -22,7 +25,7 @@ export const getUserList = async (user: UserQueryProps) => {
 
     const page = await browser.newPage();
 
-    await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES[category]}/`);
+    await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES.watchlist}/`);
 
     const [listExistsOnPage, nextPageExists] = await Promise.all([
       await checkIfListExists({ page }),
@@ -36,7 +39,6 @@ export const getUserList = async (user: UserQueryProps) => {
       await handleLazyLoad({ page });
       const moviesArray = await listScrapper({ page, posters });
 
-      console.log("Number of movies in list: ", moviesArray.length);
       await browser.close();
 
       return moviesArray;
@@ -66,9 +68,37 @@ export const getUserList = async (user: UserQueryProps) => {
     }
 
     await browser.close();
-    console.log("Number of movies in list: ", listData.length);
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      data: listData,
+    };
   } catch (error) {
     console.error(error);
     throw 500;
   }
 };
+
+/**
+ * @description Returns an array of objects with the user's list data
+ * @param {String} username - Letterboxd username
+ * @param {String} category - Content category (watchlist, films)
+ * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
+ */
+
+const listByTitle = async (query: ListByTitleProps) => {
+  const { listTitle = false, username = false } = query;
+  const posters = query.options?.posters || true;
+
+  return {
+    status: QUERY_RESULT_STATUS.ok,
+    data: ["OK"]
+
+  };
+};
+
+const getList = {
+  watchlist,
+  listByTitle,
+};
+
+export default getList;
