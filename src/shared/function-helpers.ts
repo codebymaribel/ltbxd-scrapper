@@ -6,6 +6,11 @@ export const clearNullElementsFromArray = (objectsArray) =>
  * @param Amount of time in miliseconds
  * @returns {Promise}
  */
-export const wait = (ms: number) =>{
-  return new Promise<void>(resolve => setTimeout(() => resolve(), ms))
-}
+export const wait = (ms: number) => {
+  return new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
+};
+
+export const takeScreenshot = async ({page}) =>
+  await page.screenshot({
+    path: "screenshot.jpg",
+  });

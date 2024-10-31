@@ -15,3 +15,9 @@ export interface ListByURLProps {
   listURL: string;
   options?: OptionsProps;
 }
+
+export interface ListCardProps {
+  id: string;
+  title: string;
+  url: string;
+}
