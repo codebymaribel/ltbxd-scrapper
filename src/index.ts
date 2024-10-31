@@ -18,13 +18,9 @@ async function testFunction() {
     },
   });
 
-  //TODO check if user exists
-
   const userLists = await user.getPublicLists({
     username: "maribelbhf"
   })
-
-  // console.log(publicList.data.length);
 
   console.log(userLists)
 }

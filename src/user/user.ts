@@ -2,25 +2,26 @@ import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { ListCardProps, UserListProps } from "@/types";
 import puppeteer from "puppeteer";
 import { listSummary } from "./scrapper/lists/functions";
+import scrapper from "../shared/scrapper";
 
 const getPublicLists = async (user: UserListProps) => {
   const { username } = user;
 
   try {
-    const browser = await puppeteer.launch();
+    const { status, page } = await scrapper.getPageInstance(
+      `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
+    );
 
-    const page = await browser.newPage();
+    if (status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status,
+        data: [],
+      };
 
-    await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES.lists}`);
 
-    //Check if the list is empty
+    const areThereAnyLists = await scrapper.checkIfEmptyContainer(".list-set", page);
 
-    const isItEmpty = await page
-      .waitForSelector(".list-set", { timeout: 3000 })
-      .then(() => false)
-      .catch(() => true);
-
-    if (isItEmpty) {
+    if (!areThereAnyLists) {
       return {
         status: QUERY_RESULT_STATUS.ok,
         data: [],

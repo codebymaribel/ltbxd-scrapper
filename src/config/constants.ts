@@ -19,5 +19,7 @@ export const LIST_TYPES = {
 export const QUERY_RESULT_STATUS = {
     ok: 'OK',
     failed: 'FAILED',
-    pending: 'PENDING'
+    pending: 'PENDING',
+    not_found: '404',
+    error: 'ERROR'
 } as const;
