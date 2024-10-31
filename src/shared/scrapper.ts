@@ -28,6 +28,10 @@ const getPageInstance = async (url: string) => {
   }
 };
 
+const closeBrowser = async(page) => {
+    await page.browser().close();
+}
+
 const checkIfEmptyContainer = async (selectorString = "", page) => {
   const doesSelectorExists = page
     .waitForSelector(selectorString, { timeout: 3000 })
@@ -40,6 +44,7 @@ const checkIfEmptyContainer = async (selectorString = "", page) => {
 const scrapper = {
   getPageInstance,
   checkIfEmptyContainer,
+  closeBrowser
 };
 
 export default scrapper;

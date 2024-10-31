@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import scrapper from "../shared/scrapper";
 import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { ListByTitleProps, UserListProps } from "@/types";
 import { checkIfListExists, listScrapper } from "./scrapper/list/functions";
@@ -21,11 +21,15 @@ const watchlist = async (user: UserListProps) => {
   const listData: Object[] = [];
 
   try {
-    const browser = await puppeteer.launch();
+    const { status, page } = await scrapper.getPageInstance(
+     ` ${MAIN_URL}/${username}/${LIST_TYPES.watchlist}/`
+    );
 
-    const page = await browser.newPage();
-
-    await page.goto(`${MAIN_URL}/${username}/${LIST_TYPES.watchlist}/`);
+    if (status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status,
+        data: [],
+      };
 
     const [listExistsOnPage, nextPageExists] = await Promise.all([
       await checkIfListExists({ page }),
@@ -39,7 +43,7 @@ const watchlist = async (user: UserListProps) => {
       await handleLazyLoad({ page });
       const moviesArray = await listScrapper({ page, posters });
 
-      await browser.close();
+      await scrapper.closeBrowser(page)
 
       return moviesArray;
     }
@@ -67,12 +71,13 @@ const watchlist = async (user: UserListProps) => {
       await page.waitForSelector(".paginate-nextprev");
     }
 
-    await browser.close();
+    await scrapper.closeBrowser(page)
     return {
       status: QUERY_RESULT_STATUS.ok,
       data: listData,
     };
   } catch (error) {
+    
     console.error(error);
     throw 500;
   }

@@ -12,14 +12,18 @@ const getPublicLists = async (user: UserListProps) => {
       `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
     );
 
-    if (status !== QUERY_RESULT_STATUS.ok)
+    if (status !== QUERY_RESULT_STATUS.ok) {
+      await scrapper.closeBrowser(page);
       return {
         status,
         data: [],
       };
+    }
 
-
-    const areThereAnyLists = await scrapper.checkIfEmptyContainer(".list-set", page);
+    const areThereAnyLists = await scrapper.checkIfEmptyContainer(
+      ".list-set",
+      page
+    );
 
     if (!areThereAnyLists) {
       return {
@@ -29,6 +33,8 @@ const getPublicLists = async (user: UserListProps) => {
     }
 
     const listsArray: ListCardProps[] = await listSummary({ page });
+
+    await scrapper.closeBrowser(page);
 
     return {
       status: QUERY_RESULT_STATUS.ok,
