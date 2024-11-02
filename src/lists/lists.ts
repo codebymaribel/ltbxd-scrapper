@@ -1,12 +1,7 @@
 import scrapper from "../shared/scrapper";
 import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { ListByTitleProps, UserListProps } from "@/types";
-import { checkIfListExists, listScrapper } from "./scrapper/list/functions";
-import {
-  handleLazyLoad,
-  isThereAnotherPage,
-  nextPageURL,
-} from "./scrapper/routes/functions";
+import { listScrapper } from "./functions";
 
 /**
  * @description Returns an array of objects with the user's list data
@@ -32,15 +27,15 @@ const watchlist = async (user: UserListProps) => {
       };
 
     const [listExistsOnPage, nextPageExists] = await Promise.all([
-      await checkIfListExists({ page }),
-      await isThereAnotherPage({ page }),
+      await scrapper.checkIfContainerHasChildren( page ),
+      await scrapper.getNextPageURL( page ),
     ]);
 
     if (!listExistsOnPage) throw Error("No hay peliculas en este enlace");
 
     //Handle infinite scroll list
     if (!nextPageExists) {
-      await handleLazyLoad({ page });
+      await scrapper.handleLazyLoad( page );
       const moviesArray = await listScrapper({ page, posters });
 
       await scrapper.closeBrowser(page)
@@ -54,7 +49,7 @@ const watchlist = async (user: UserListProps) => {
     while (!allDataCollected) {
       const [moviesArray, nextPage] = await Promise.all([
         await listScrapper({ page, posters }),
-        await nextPageURL({ page }),
+        await scrapper.getNextPageURL( page ),
       ]);
 
       listData.push(...moviesArray);

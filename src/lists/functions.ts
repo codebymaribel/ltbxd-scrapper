@@ -1,20 +1,6 @@
 import { clearNullElementsFromArray } from "@/helpers";
 import { ListMovieMetadataProps, ListScrapperProps } from "@/types";
 
-
-
-export const checkIfListExists = async ({ page }) => {
-    try {
-      const filmElementExists: boolean = await page
-        .$$eval("div.film-poster", (elementsArray) => elementsArray.length > 0)
-        .catch(() => false);
-      return filmElementExists;
-    } catch (error) {
-      //TODO como validar el error del catch apropiadamente
-      return false;
-    }
-  };
-
   export const listScrapper = async ({ page, posters }: ListScrapperProps) => {
     const listMetadataArray: ListMovieMetadataProps[] = await page.$$eval(
       "div.film-poster",
