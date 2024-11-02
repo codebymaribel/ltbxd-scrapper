@@ -39,6 +39,7 @@
   },
   "_moduleAliases": {
     "@/helpers": "src/shared/function-helpers.ts",
+    "@/scrapper":"src/shared/scrapper.ts",
     "@/config": "src/config/constants.ts"
   }
 }

@@ -1,5 +1,5 @@
 import "module-alias/register";
-import getList from "./lists/lists";
+import list from "./lists/lists";
 import user from "./user/user";
 
 async function testFunction() {
@@ -10,7 +10,7 @@ async function testFunction() {
     },
   });
 
-  const publicList = await getList.listByTitle({
+  const publicList = await list.listByTitle({
     username: "maribelbhf",
     listTitle: "Peliculitas para asustarnos de manera uteana v1.0",
     options: {

@@ -6,6 +6,7 @@
     "moduleResolution": "node10",                        /* Specify the base directory to resolve non-relative module names. */
     "paths": {
       "@/types": ["./types/index.d.ts"],
+      "@/scrapper" : ["./src/shared/scrapper.ts"],
       "@/helpers": ["./src/shared/function-helpers.ts"],
       "@/config":["./src/config/constants.ts"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */

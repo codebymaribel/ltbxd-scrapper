@@ -1,6 +1,5 @@
-import { clearNullElementsFromArray } from "@/helpers";
+import scrapper from "@/scrapper";
 import { ListScrapperProps, MovieObjectProps, MoviePoster } from "@/types";
-import scrapper from "../shared/scrapper";
 import { QUERY_RESULT_STATUS } from "@/config";
 
 export const getListMovies = async ({

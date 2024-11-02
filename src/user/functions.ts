@@ -1,5 +1,4 @@
 import { MAIN_URL } from "@/config";
-import { takeScreenshot } from "@/helpers";
 import { ListCardProps } from "@/types";
 
 export const listSummary = async ({ page }) => {

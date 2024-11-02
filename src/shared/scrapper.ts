@@ -1,5 +1,5 @@
-import { QUERY_RESULT_STATUS } from "@/config";
 import puppeteer, { Page } from "puppeteer";
+import { QUERY_RESULT_STATUS } from "@/config";
 import { wait } from "@/helpers";
 
 const getPageInstance = async (url: string) => {

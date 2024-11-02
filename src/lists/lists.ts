@@ -1,6 +1,5 @@
-import scrapper from "../shared/scrapper";
-import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
-import { ListByTitleProps, UserListProps } from "@/types";
+import { QUERY_RESULT_STATUS } from "@/config";
+import { ListByTitleProps } from "@/types";
 
 /**
  * @description Returns an array of objects with the user's list data
@@ -20,8 +19,8 @@ const listByTitle = async (query: ListByTitleProps) => {
   };
 };
 
-const getList = {
+const list = {
   listByTitle,
 };
 
-export default getList;
+export default list;
