@@ -3,7 +3,7 @@ import getList from "./lists/lists";
 import user from "./user/user";
 
 async function testFunction() {
-  const userwatchlist = await getList.watchlist({
+  const userwatchlist = await user.getWatchlist({
     username: "maribelbhf",
     options: {
       posters: true,
@@ -22,7 +22,7 @@ async function testFunction() {
     username: "maribelbhf"
   })
 
-  console.log(userLists)
+  console.log(userwatchlist.data.length)
 }
 
 testFunction();

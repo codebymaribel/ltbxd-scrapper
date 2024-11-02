@@ -56,21 +56,12 @@ const checkIfContainerHasChildren = async (page: Page) => {
 
 const getNextPageURL = async (page: Page) => {
   try {
-    const isThereAnotherPage = await page
-      .$eval(".paginate-nextprev", () => true)
-      .catch(() => false);
+    const nextPageContainer = await page.$("a.next");
+    const nextPageLink = nextPageContainer
+      ? await page.evaluate((el) => el.getAttribute("href"), nextPageContainer)
+      : null;
 
-    if (!isThereAnotherPage) return null;
-
-    const nextPageLink = await page.evaluate(() => {
-      try {
-        const element = document.querySelector(".next");
-        const href = (element as HTMLAnchorElement).href;
-        return href;
-      } catch (error) {
-        return null;
-      }
-    });
+    if (!nextPageLink) return null;
 
     return nextPageLink;
   } catch (error) {
