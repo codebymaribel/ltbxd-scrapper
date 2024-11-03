@@ -1,10 +1,17 @@
 {
-  "name": "letterboxd-scraper",
-  "description": "A letterboxd scrapper for public data",
-  "version": "0.0.1",
+  "name": "ltbxd-scrapper",
+  "version": "1.0.0",
+  "description": "A letterboxd scrapper for public data.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codebymaribel/ltbxd-scrapper"
+  },
+  "bugs": {
+    "url": "https://github.com/codebymaribel/ltbxd-scrapper/issues"
+  },
   "license": "MIT",
   "keywords": [
     "letterboxd",
@@ -13,7 +20,7 @@
   ],
   "author": {
     "name": "Maribel Hernandez",
-    "email": "hernandezfmb@gmail.com"
+    "email": "codebymaribel@gmail.com"
   },
   "scripts": {
     "start": "ts-node src/index.ts",

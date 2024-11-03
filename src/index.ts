@@ -22,7 +22,6 @@ async function testFunction() {
     username: "maribelbhf"
   })
 
-  console.log(userwatchlist.data.length)
 }
 
 testFunction();
