@@ -1,5 +1,5 @@
 import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
-import { ListCardProps, UserListProps } from "@/types";
+import { ListCardProps, UserQueryProps } from "@/types";
 import { listSummary } from "./functions";
 import scrapper from "../shared/scrapper";
 import { getListMovies } from "../lists/functions";
@@ -11,7 +11,7 @@ import { getListMovies } from "../lists/functions";
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
-const getWatchlist = async (user: UserListProps) => {
+const getWatchlist = async (user: UserQueryProps) => {
   const { username } = user;
   const posters = user.options?.posters || true;
   let allDataCollected = false;
@@ -74,7 +74,7 @@ const getWatchlist = async (user: UserListProps) => {
   }
 };
 
-const getPublicLists = async (user: UserListProps) => {
+const getPublicLists = async (user: UserQueryProps) => {
   const { username } = user;
 
   try {

@@ -1,4 +1,5 @@
 import { Page } from "puppeteer";
+import { OptionsProps, UserQueryProps } from "./user";
 
 export interface ListScrapperProps {
   page: Page;
@@ -18,4 +19,19 @@ export type ListMovieMetadataProps = {
 
 export interface ListMovieWithPosterProps extends ListMovieMetadataProps {
   poster: ListPosterProps;
+}
+
+export interface ListByTitleProps extends UserQueryProps {
+  listTitle: string;
+}
+
+export interface ListByURLProps {
+  listURL: string;
+  options?: OptionsProps;
+}
+
+export interface ListCardProps {
+  id: string;
+  title: string;
+  url: string;
 }
