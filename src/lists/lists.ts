@@ -8,7 +8,7 @@ import { ListByTitleProps } from "@/types";
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
-const listByTitle = async (query: ListByTitleProps) => {
+export const listByTitle = async (query: ListByTitleProps) => {
   const { listTitle = false, username = false } = query;
   const posters = query.options?.posters || true;
 
@@ -19,8 +19,3 @@ const listByTitle = async (query: ListByTitleProps) => {
   };
 };
 
-const list = {
-  listByTitle,
-};
-
-export default list;

@@ -11,7 +11,7 @@ import { getListMovies } from "../lists/functions";
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
-const getWatchlist = async (user: UserQueryProps) => {
+export const getWatchlist = async (user: UserQueryProps) => {
   const { username } = user;
   const posters = user.options?.posters || true;
   let allDataCollected = false;
@@ -74,7 +74,7 @@ const getWatchlist = async (user: UserQueryProps) => {
   }
 };
 
-const getPublicLists = async (user: UserQueryProps) => {
+export const getPublicLists = async (user: UserQueryProps) => {
   const { username } = user;
 
   try {
@@ -115,9 +115,3 @@ const getPublicLists = async (user: UserQueryProps) => {
   }
 };
 
-const user = {
-  getWatchlist,
-  getPublicLists,
-};
-
-export default user;

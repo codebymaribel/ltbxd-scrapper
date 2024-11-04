@@ -1,16 +1,24 @@
 import "module-alias/register";
-import list from "./lists/lists";
-import user from "./user/user";
+import { getPublicLists, getWatchlist } from "./user/user";
+import { listByTitle } from "./lists/lists";
+
+const ltbxdScrapper = {
+  getWatchlist,
+  listByTitle,
+  getPublicLists
+}
 
 async function testFunction() {
-  const userwatchlist = await user.getWatchlist({
+
+
+  const userwatchlist = await ltbxdScrapper.getWatchlist({
     username: "maribelbhf",
     options: {
       posters: true,
     },
   });
 
-  const publicList = await list.listByTitle({
+  const publicList = await ltbxdScrapper.listByTitle({
     username: "maribelbhf",
     listTitle: "Peliculitas para asustarnos de manera uteana v1.0",
     options: {
@@ -18,9 +26,11 @@ async function testFunction() {
     },
   });
 
-  const userLists = await user.getPublicLists({
+  const userLists = await ltbxdScrapper.getPublicLists({
     username: "maribelbhf"
   })
+
+  console.log(userwatchlist)
 
 }
 
