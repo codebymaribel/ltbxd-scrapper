@@ -1,10 +1,10 @@
-import { MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import scrapper from "@/scrapper";
+import { MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { findingMovieTitle } from "./functions";
 import { MovieSearchProps } from "@/types";
 import { formatStringToMovieTitle } from "@/helpers";
 
-export const getMovieByTitle = async (params) => {
+export const searchFilm = async (params) => {
   const { title } = params;
 
   const formattedTitle = formatStringToMovieTitle(title);
@@ -31,9 +31,9 @@ export const getMovieByTitle = async (params) => {
     };
   } catch (err) {
     console.log(err);
-    return{
+    return {
       status: QUERY_RESULT_STATUS.failed,
-      data: []
-    }
+      data: [],
+    };
   }
 };

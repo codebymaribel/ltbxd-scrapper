@@ -1,13 +1,13 @@
 import "module-alias/register";
 import { getPublicLists, getWatchlist } from "./user/user";
 import { listByTitle } from "./lists/lists";
-import { getMovieByTitle } from "./movie/movie";
+import { searchFilm } from "./movie/movie";
 
 const ltbxdScrapper = {
   getWatchlist,
   listByTitle,
   getPublicLists,
-  getMovieByTitle,
+  searchFilm,
 };
 
 async function testFunction() {
@@ -30,7 +30,7 @@ async function testFunction() {
   //   username: "maribelbhf",
   // });
 
-  const searchForMovie = await ltbxdScrapper.getMovieByTitle({
+  const searchForMovie = await ltbxdScrapper.searchFilm({
     title: "SAW",
   });
 

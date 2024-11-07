@@ -31,7 +31,7 @@ export const findingMovieTitle = async (page: Page, title: string) => {
 
       moviesArray.push({
         title: title,
-        page: MAIN_URL + filmLink,
+        pageURL: MAIN_URL + filmLink,
         poster: filmPoster,
       });
     }

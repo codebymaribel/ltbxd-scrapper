@@ -13,6 +13,6 @@ export interface MovieObjectProps {
 
 export interface MovieSearchProps {
   title: MovieTitle;
-  page: MoviePageURL;
+  pageURL: MoviePageURL;
   poster: MoviePoster;
 }
