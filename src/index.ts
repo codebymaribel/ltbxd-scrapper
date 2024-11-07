@@ -1,7 +1,7 @@
 import "module-alias/register";
 import { getPublicLists, getWatchlist } from "./user/user";
 import { listByTitle } from "./lists/lists";
-import { searchFilm } from "./movie/movie";
+import { searchFilm } from "./film/film";
 
 const ltbxdScrapper = {
   getWatchlist,

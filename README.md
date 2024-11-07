@@ -16,9 +16,9 @@ A scrapper for Letterboxd public data.
 
 ## Key Features
 
-- Get user watchlist data.
+- Get user watchlist films.
 - Get user public lists.
-- Get list movies by list title or URL.
+- Get list films by list title or URL.
 - Search film on Letterboxd by title.
 - Search film on Letterboxd by URL.
 
@@ -104,7 +104,7 @@ Here's the list of available functions in this package:
 <strong>getWatchlist</strong> 
 </td>
 <td width="50%">
-<strong>Use: </strong>Get user watchlist data </br>
+<strong>Use: </strong>Get user watchlist films </br>
 <strong>Requires: </strong> <a href="#query-parameters">UserQuery</a> 
 </td>
 <td width="40%">
@@ -182,7 +182,7 @@ Here's the list of available functions in this package:
 
 - **id**: Letterboxd film ID.
 - **title**: film title.
-- **slug**: film slug (this is what they use for the movies URL).
+- **slug**: film slug (this is what they use for the films URL).
 - **poster**: film poster (rezised from letterboxd website).
 
 #### Film Search Object
