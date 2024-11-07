@@ -1,16 +1,16 @@
 import "module-alias/register";
 import { getPublicLists, getWatchlist } from "./user/user";
 import { listByTitle } from "./lists/lists";
+import { getMovieByTitle } from "./movie/movie";
 
 const ltbxdScrapper = {
   getWatchlist,
   listByTitle,
-  getPublicLists
-}
+  getPublicLists,
+  getMovieByTitle,
+};
 
 async function testFunction() {
-
-
   const userwatchlist = await ltbxdScrapper.getWatchlist({
     username: "maribelbhf",
     options: {
@@ -27,10 +27,13 @@ async function testFunction() {
   });
 
   const userLists = await ltbxdScrapper.getPublicLists({
-    username: "maribelbhf"
-  })
+    username: "maribelbhf",
+  });
 
-  console.log(userwatchlist)
+  const searchForMovie = await ltbxdScrapper.getMovieByTitle({
+    title: "SAW",
+  });
+
 
 }
 
