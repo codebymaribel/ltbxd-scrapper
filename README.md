@@ -4,6 +4,16 @@ A scrapper for Letterboxd public data.
 
 ## Table of Contents
 
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Functions](#functions)
+- [Query Parameters](#query-parameters)
+- [Response Objects](#response-objects)
+- [Types](#types)
+- [Collaboration](#collaboration)
+- [License](#license)
+
 ## Key Features
 
 - Get user watchlist data.
@@ -80,6 +90,7 @@ Here's the list of available functions in this package:
 <td width="40%">
 - <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
 <br/>
+<br/>
 - <strong>data:</strong><a href="#film-search-object"> FilmSearchObject[]</a> 
 </td>
 </tr>
@@ -94,12 +105,13 @@ Here's the list of available functions in this package:
 </td>
 <td width="50%">
 <strong>Use: </strong>Get user watchlist data </br>
-<strong>Requires: </strong> <a href="#getWatchlist">UserQuery</a> 
+<strong>Requires: </strong> <a href="#query-parameters">UserQuery</a> 
 </td>
 <td width="40%">
 - <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
 <br/>
-- <strong>data</strong>: an array of <a href="#movie-object">movie objects</a> section.
+<br/>
+- <strong>data</strong>: <a href="#film-object">FilmObject[]</a> 
 </td>
 </tr>
 <tr>
@@ -108,10 +120,13 @@ Here's the list of available functions in this package:
 </td>
 <td width="60%">
 <strong>Use: </strong>Get user public lists names and IDs</br>
-<strong>Requires: </strong> ListQuery
+<strong>Requires: </strong> <a href="#query-parameters">UserListsParams</a>
 </td>
 <td width="20%">
-
+- <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
+<br/>
+<br/>
+- <strong>data</strong>: <a href="#lists-search-object">ListsSearchObject[]
 </td>
 </tr>
 <tr>
@@ -135,46 +150,63 @@ Here's the list of available functions in this package:
 <th>Query</th>
 <th>Parameters</th>
 </tr>
-<tr id="getWatchlist">
+<tr id="watchlistParams">
 <td>
-<strong>UserQuery</strong>
+<strong>WatchlistParams</strong>
 </td>
 <td>
-- <strong>username</strong>: letterboxd username <br/>
-- <strong>options</strong>: <a href="#options-params">options object</a> (optional)
-</pre>
+{<br/>
+  <strong>username</strong>: letterboxd username, <br/>
+  <strong>options</strong>: <a href="#options-params">options object</a> (optional)<br/>
+  }
 </td>
+</tr>
+<tr id="userListParams">
+<td>
+<strong>UserListParams</strong>
+</td>
+<td>
+{ <strong>username</strong>: letterboxd username }
+</td>
+
 </tr>
 </table>
 
-##### Options Object
+#### Options Object
 
-- **poster**: if false returns movie data without the letterboxd poster, if not specified returns always true.
+- **poster**: if false returns film data without the letterboxd poster, if not specified returns always true.
 
-## Types
+## Response Objects
 
-For more info about the types please refer to the [types folder](./types/)
+#### Film Object
 
+- **id**: Letterboxd film ID.
+- **title**: film title.
+- **slug**: film slug (this is what they use for the movies URL).
+- **poster**: film poster (rezised from letterboxd website).
 
-##### Film Object
+#### Film Search Object
 
-- **id**: Letterboxd movie ID.
-- **title**: movie title.
-- **slug**: movie slug (this is what they use for the movies URL).
-- **poster**: movie poster (rezised from letterboxd website).
+- **title**: film title.
+- **pageURL**: film page URL on Letterboxd.
+- **poster**: film poster (rezised from letterboxd website).
 
-##### Film Search Object
+#### Lists Search Object
 
-- **title**: movie title.
-- **pageURL**: movie page URL on Letterboxd.
-- **poster**: movie poster (rezised from letterboxd website).
+- **id**: Letterboxd list ID.
+- **title**: list title.
+- **url**: list page URL on Letterboxd.
 
-##### Query status
+#### Query status
 
 - **404** -> The URL does not exist on letterboxd.
 - **OK** -> The request was completed successfully.
 - **FAILED** -> There was an issue completing the request.
 - **PENDING** -> The request is not resolved yet.
+
+## Types
+
+For more info about the types please refer to the [types folder](./types/)
 
 ## 🤝 Contributing
 
