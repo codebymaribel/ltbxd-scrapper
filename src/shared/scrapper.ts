@@ -3,11 +3,14 @@ import { QUERY_RESULT_STATUS } from "@/config";
 import { wait } from "@/helpers";
 
 const getPageInstance = async (url: string) => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+  });
   const page = await browser.newPage();
 
   try {
-    const urlResponse = await page.goto(url);
+    const urlResponse = await page.goto(url, {waitUntil: 'domcontentloaded'});
 
     if (urlResponse?.status() === 404) {
       return {

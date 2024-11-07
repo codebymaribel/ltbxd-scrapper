@@ -1,5 +1,6 @@
 import scrapper from "@/scrapper";
 import { MAIN_URL } from "@/config";
+import { takeScreenshot } from "@/helpers";
 import { MovieSearchProps } from "@/types";
 import { Page } from "puppeteer";
 

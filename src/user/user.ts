@@ -58,7 +58,7 @@ export const getWatchlist = async (user: UserQueryProps) => {
       }
 
       await page.goto(`${MAIN_URL + nextPage}`, {
-        waitUntil: "networkidle0",
+        waitUntil: "domcontentloaded",
       });
 
       await page.waitForSelector(".paginate-nextprev");
@@ -114,4 +114,3 @@ export const getPublicLists = async (user: UserQueryProps) => {
     console.log(error);
   }
 };
-
