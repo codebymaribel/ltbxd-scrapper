@@ -1,3 +1,4 @@
+import scrapper from "@/scrapper";
 import { MAIN_URL } from "@/config";
 import { MovieSearchProps } from "@/types";
 import { Page } from "puppeteer";
@@ -7,6 +8,13 @@ export const findingMovieTitle = async (page: Page, title: string) => {
     const moviesArray: MovieSearchProps[] = [];
 
     const selector = `li > div[data-film-name="${title}"]`;
+    const checkIfSelectorExists = await scrapper.checkIfSelectorExists(
+      selector,
+      page
+    );
+
+    if (!checkIfSelectorExists) return [];
+
     const moviesWithTitle = await page.$$(selector);
 
     if (moviesWithTitle.length === 0) return moviesWithTitle;
