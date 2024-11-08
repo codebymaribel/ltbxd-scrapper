@@ -14,7 +14,7 @@ async function testFunction() {
   // const userwatchlist = await ltbxdScrapper.getWatchlist({
   //   username: "maribelbhf",
   //   options: {
-  //     posters: true,
+  //     posters: false,
   //   },
   // });
 

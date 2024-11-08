@@ -1,8 +1,13 @@
-import { LIST_TYPES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
+import {
+  ERROR_MESSAGES,
+  LIST_TYPES,
+  MAIN_URL,
+  QUERY_RESULT_STATUS,
+} from "@/config";
 import { ListCardProps, UserQueryProps } from "@/types";
 import { listSummary } from "./functions";
 import scrapper from "../shared/scrapper";
-import { getListMovies } from "../lists/functions";
+import { getFilmsArray, listFilms } from "../lists/functions";
 
 /**
  * @description Returns an array of objects with the user's list data
@@ -11,106 +16,20 @@ import { getListMovies } from "../lists/functions";
  * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
  */
 
-export const getWatchlist = async (user: UserQueryProps) => {
-  const { username } = user;
-  const posters = user.options?.posters || true;
-  let allDataCollected = false;
-  const listData: Object[] = [];
+export const getWatchlist = async (params: UserQueryProps) => {
+  const posters = params.options?.posters || true;
 
-  try {
-    const { status, page } = await scrapper.getPageInstance(
-      ` ${MAIN_URL}/${username}/${LIST_TYPES.watchlist}/`
-    );
-
-    if (status !== QUERY_RESULT_STATUS.ok)
-      return {
-        status,
-        data: [],
-      };
-
-    const nextPageExists = await scrapper.getNextPageURL(page);
-
-    if (!nextPageExists) {
-      await scrapper.handleLazyLoad(page);
-      const moviesArray = await getListMovies({ page, posters });
-
-      await scrapper.closeBrowser(page);
-
-      return moviesArray;
-    }
-    while (!allDataCollected) {
-      const [moviesFromCurrentPage, nextPage] = await Promise.all([
-        await getListMovies({ page, posters }),
-        await scrapper.getNextPageURL(page),
-      ]);
-
-      if (status !== QUERY_RESULT_STATUS.ok)
-        return {
-          status: moviesFromCurrentPage.status,
-          data: [],
-        };
-
-      listData.push(...moviesFromCurrentPage.data);
-
-      if (!nextPage) {
-        allDataCollected = true;
-        break;
-      }
-
-      await page.goto(`${MAIN_URL + nextPage}`, {
-        waitUntil: "domcontentloaded",
-      });
-
-      await page.waitForSelector(".paginate-nextprev");
-    }
-    await scrapper.closeBrowser(page);
+  if (!params.username) {
     return {
-      status: QUERY_RESULT_STATUS.ok,
-      data: listData,
+      status: QUERY_RESULT_STATUS.failed,
+      data: [],
+      errorMessage: ERROR_MESSAGES.missing_parameters,
     };
-  } catch (error) {
-    console.error(error);
-    throw 500;
   }
-};
+  const listMovies = await listFilms(
+    ` ${MAIN_URL}/${params.username}/${LIST_TYPES.watchlist}/`,
+    posters
+  );
 
-export const getPublicLists = async (user: UserQueryProps) => {
-  const { username } = user;
-
-  try {
-    const { status, page } = await scrapper.getPageInstance(
-      `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
-    );
-
-    if (status !== QUERY_RESULT_STATUS.ok) {
-      if (page) await scrapper.closeBrowser(page);
-      return {
-        status,
-        data: [],
-      };
-    }
-
-    const areThereAnyLists = await scrapper.checkIfSelectorExists(
-      ".list-set",
-      page
-    );
-
-    if (!areThereAnyLists) {
-      return {
-        status: QUERY_RESULT_STATUS.ok,
-        data: [],
-      };
-    }
-
-    const listsArray: ListCardProps[] = await listSummary({ page });
-
-    await scrapper.closeBrowser(page);
-
-    return {
-      status: QUERY_RESULT_STATUS.ok,
-      data: listsArray,
-    };
-  } catch (error) {
-    console.log(error);
-  }
+  return listMovies;
 };
