@@ -21,8 +21,9 @@ export interface ListMovieWithPosterProps extends ListMovieMetadataProps {
   poster: ListPosterProps;
 }
 
-export interface ListByTitleProps extends UserQueryProps {
-  listTitle: string;
+export interface ListMoviesProps {
+  url: string;
+  options?: OptionsProps;
 }
 
 export interface ListByURLProps {

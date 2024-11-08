@@ -1,11 +1,11 @@
 import "module-alias/register";
-import { getPublicLists, getWatchlist } from "./user/user";
-import { listByTitle } from "./lists/lists";
+import { getWatchlist } from "./user/user";
+import { getListFilms, getPublicLists } from "./lists/lists";
 import { searchFilm } from "./film/film";
 
 const ltbxdScrapper = {
   getWatchlist,
-  listByTitle,
+  getListFilms,
   getPublicLists,
   searchFilm,
 };
@@ -18,23 +18,22 @@ async function testFunction() {
   //   },
   // });
 
-  // const publicList = await ltbxdScrapper.listByTitle({
-  //   username: "maribelbhf",
-  //   listTitle: "Peliculitas para asustarnos de manera uteana v1.0",
-  //   options: {
-  //     posters: false,
-  //   },
-  // });
+  const listMovies = await ltbxdScrapper.getListFilms({
+    url: 'https://letterboxd.com/maribelbhf/list/si-me-pides-que-elija-una-pelicula-seria/',
+    options: {
+      posters: false,
+    },
+  });
 
   // const userLists = await ltbxdScrapper.getPublicLists({
   //   username: "maribelbhf",
   // });
 
-  const searchForMovie = await ltbxdScrapper.searchFilm({
-    title: "SAW",
-  });
+  // const searchForMovie = await ltbxdScrapper.searchFilm({
+  //   title: "SAW",
+  // });
 
-  console.log(searchForMovie);
+  console.log(listMovies.data.length);
 }
 
 testFunction();
