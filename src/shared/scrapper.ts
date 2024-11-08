@@ -39,7 +39,7 @@ const getPageInstance = async (url: string) => {
       return {
         status: QUERY_RESULT_STATUS.not_found,
         page: null,
-        errorMessage: null
+        errorMessage: null,
       };
     }
 
@@ -53,7 +53,7 @@ const getPageInstance = async (url: string) => {
     return {
       status: QUERY_RESULT_STATUS.error,
       page: null,
-      errorMessage: null
+      errorMessage: null,
     };
   }
 };
@@ -61,6 +61,11 @@ const getPageInstance = async (url: string) => {
 const closeBrowser = async (page: Page) => {
   await page.browser().close();
 };
+
+const gotoNextPage = async (page: Page, url: string) =>
+  await page.goto(url, {
+    waitUntil: "domcontentloaded",
+  });
 
 const checkIfSelectorExists = async (selectorString: string, page: Page) => {
   const doesSelectorExists = page
@@ -133,6 +138,7 @@ const scrapper = {
   getNextPageURL,
   checkIfContainerHasChildren,
   handleLazyLoad,
+  gotoNextPage,
 };
 
 export default scrapper;
