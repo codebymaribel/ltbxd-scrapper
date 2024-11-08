@@ -23,3 +23,8 @@ export const QUERY_RESULT_STATUS = {
     not_found: '404',
     error: 'ERROR'
 } as const;
+
+export const ERROR_MESSAGES = {
+    missing_parameters: 'INCOMPLETE PARAMETERS',
+    not_valid_url: 'YOU NEED TO SUBMIT A VALID LETTERBOXD URL'
+} as const;

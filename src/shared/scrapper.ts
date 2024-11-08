@@ -1,33 +1,59 @@
 import puppeteer, { Page } from "puppeteer";
-import { QUERY_RESULT_STATUS } from "@/config";
-import { wait } from "@/helpers";
+import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from "@/config";
+import { checkIfValidURL, wait } from "@/helpers";
 
 const getPageInstance = async (url: string) => {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+    ],
   });
+
   const page = await browser.newPage();
 
+  if (!url) {
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      data: [],
+      errorMessage: ERROR_MESSAGES.missing_parameters,
+    };
+  }
+
+  const isTheURLValid = checkIfValidURL(url);
+
+  if (!isTheURLValid) {
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      data: [],
+      errorMessage: ERROR_MESSAGES.not_valid_url,
+    };
+  }
+
   try {
-    const urlResponse = await page.goto(url, {waitUntil: 'domcontentloaded'});
+    const urlResponse = await page.goto(url, { waitUntil: "domcontentloaded" });
 
     if (urlResponse?.status() === 404) {
       return {
         status: QUERY_RESULT_STATUS.not_found,
         page: null,
+        errorMessage: null
       };
     }
 
     return {
       status: QUERY_RESULT_STATUS.ok,
       page: page,
+      errorMessage: null,
     };
   } catch (error) {
     await browser.close();
     return {
       status: QUERY_RESULT_STATUS.error,
       page: null,
+      errorMessage: null
     };
   }
 };

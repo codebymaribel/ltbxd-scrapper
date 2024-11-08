@@ -37,6 +37,7 @@ export const formatStringToMovieTitle = (text: string) => {
 
   return formattedString;
 };
+
 /**
  * @description Sets a timeout and once its completed resolves the promise
  * @param Amount of time in miliseconds
@@ -45,6 +46,14 @@ export const formatStringToMovieTitle = (text: string) => {
 export const wait = (ms: number) => {
   return new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
 };
+
+/**
+ * @description Checks if a string is a valid Letterboxd URL
+ * @param {String} url - Letterboxd URL
+ * @returns {Promise}
+ */
+export const checkIfValidURL = (url: string) =>
+  url.toLowerCase().includes("letterboxd.com");
 
 export const takeScreenshot = async ({ page }) =>
   await page.screenshot({
