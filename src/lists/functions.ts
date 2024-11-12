@@ -1,5 +1,10 @@
 import scrapper from "@/scrapper";
-import { ListScrapperProps, MovieObjectProps, MoviePoster } from "@/types";
+import {
+  ListScrapperProps,
+  MovieObjectProps,
+  MoviePoster,
+  PromiseAllSettledProps,
+} from "@/types";
 import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 
 export const listFilms = async (url: string, posters: boolean) => {
@@ -7,19 +12,26 @@ export const listFilms = async (url: string, posters: boolean) => {
   const listData: Object[] = [];
 
   try {
-    const { status, page, errorMessage } = await scrapper.getPageInstance(url);
+    const { status, page, errorMessage } = await scrapper.getPageInstance(url, [
+      "script",
+      "image",
+      "font",
+      "media",
+      "manifest",
+    ]);
 
-    if (status !== QUERY_RESULT_STATUS.ok)
+    if (status !== QUERY_RESULT_STATUS.ok) {
+      if (page) await scrapper.closeBrowser(page);
       return {
         status,
         data: [],
         errorMessage,
       };
+    }
 
     const nextPageLink = await scrapper.getNextPageURL(page);
 
     if (!nextPageLink) {
-      await scrapper.handleLazyLoad(page);
       const filmsArray = await getFilmsArray({ page, posters });
 
       await scrapper.closeBrowser(page);
@@ -85,25 +97,31 @@ export const getFilmsArray = async ({
 
   for (const movie of moviesContainers) {
     let poster: MoviePoster = null;
-    const id =
-      (await page.evaluate((el) => el.getAttribute("data-film-id"), movie)) ||
-      "";
-    const title =
-      (await page.evaluate((el) => el.getAttribute("data-film-name"), movie)) ||
-      "";
-    const slug =
-      (await page.evaluate((el) => el.getAttribute("data-film-slug"), movie)) ||
-      "";
+    const [id, title, slug] = (await Promise.allSettled([
+      await page.evaluate((el) => el.getAttribute("data-film-id"), movie),
+      await page.evaluate((el) => el.getAttribute("data-film-name"), movie),
+      await page.evaluate((el) => el.getAttribute("data-film-slug"), movie),
+    ])) as PromiseAllSettledProps<string | null>[];
 
     if (posters)
       poster = await movie.$eval(" div > img", (result) =>
         result.getAttribute("src")
       );
 
+    if (
+      id.status !== "fulfilled" ||
+      title.status !== "fulfilled" ||
+      slug.status !== "fulfilled" ||
+      id.value !== "null" ||
+      title.value !== "null" ||
+      slug.value !== "null"
+    )
+      continue;
+
     moviesData.push({
-      id,
-      title,
-      slug,
+      id: id.value,
+      title: title.value,
+      slug: slug.value,
       poster,
     });
   }

@@ -120,40 +120,12 @@ const getNextPageURL = async (page: Page) => {
   }
 };
 
-const handleLazyLoad = async (page: Page) => {
-  // Get body final height
-  const totalHeight: number = await page.evaluate(
-    () => document.querySelector("body")?.scrollHeight || 0
-  );
-
-  let currentHeight: number = 0;
-
-  // get current viewportHeight
-  const viewportHeight: number = page.viewport()?.height || 0;
-
-  if (viewportHeight === currentHeight) return;
-
-  while (currentHeight + viewportHeight < totalHeight) {
-    await page.evaluate(
-      (_currentHeight: number, _viewportHeight: number) => {
-        window.scrollBy(_currentHeight, _viewportHeight);
-      },
-      currentHeight,
-      viewportHeight
-    );
-    await wait(2000);
-
-    currentHeight = currentHeight + viewportHeight;
-  }
-};
-
 const scrapper = {
   getPageInstance,
   checkIfSelectorExists,
   closeBrowser,
   getNextPageURL,
   checkIfContainerHasChildren,
-  handleLazyLoad,
   gotoNextPage,
 };
 
