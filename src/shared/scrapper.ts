@@ -2,7 +2,10 @@ import puppeteer, { Page } from "puppeteer";
 import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from "@/config";
 import { checkIfValidURL, wait } from "@/helpers";
 
-const getPageInstance = async (url: string) => {
+const getPageInstance = async (
+  url: string,
+  unwantedElements: string[] = []
+) => {
   const browser = await puppeteer.launch({
     headless: true,
     args: [
@@ -13,6 +16,8 @@ const getPageInstance = async (url: string) => {
   });
 
   const page = await browser.newPage();
+  if (unwantedElements && unwantedElements.length > 0)
+    await preventElementLoad(page, unwantedElements);
 
   if (!url) {
     return {
@@ -67,9 +72,20 @@ const gotoNextPage = async (page: Page, url: string) =>
     waitUntil: "domcontentloaded",
   });
 
+const preventElementLoad = async (page: Page, elements: String[]) => {
+  await page.setRequestInterception(true);
+
+  page.on("request", (request) => {
+    if (elements.indexOf(request.resourceType()) !== -1) {
+      return request.abort();
+    }
+    request.continue();
+  });
+};
+
 const checkIfSelectorExists = async (selectorString: string, page: Page) => {
   const doesSelectorExists = page
-    .waitForSelector(selectorString, { timeout: 3000 })
+    .waitForSelector(selectorString, { timeout: 1000 })
     .then(() => true)
     .catch(() => false);
 
