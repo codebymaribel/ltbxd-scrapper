@@ -18,7 +18,7 @@ A scrapper for Letterboxd public data.
 
 - Get user watchlist films.
 - Get user public lists.
-- Get list films by list title or URL.
+- Get films from a list by URL.
 - Search film on Letterboxd by title.
 - Search film on Letterboxd by URL.
 

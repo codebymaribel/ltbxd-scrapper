@@ -7,7 +7,7 @@ import {
 import { ListCardProps, UserQueryProps } from "@/types";
 import { listSummary } from "./functions";
 import scrapper from "../shared/scrapper";
-import { getFilmsArray, listFilms } from "../lists/functions";
+import { listFilms } from "../lists/functions";
 
 /**
  * @description Returns an array of objects with the user's list data
@@ -26,8 +26,9 @@ export const getWatchlist = async (params: UserQueryProps) => {
       errorMessage: ERROR_MESSAGES.missing_parameters,
     };
   }
+
   const listMovies = await listFilms(
-    ` ${MAIN_URL}/${params.username}/${LIST_TYPES.watchlist}/`,
+    `${MAIN_URL}/${params.username}/${LIST_TYPES.watchlist}/`,
     posters
   );
 
