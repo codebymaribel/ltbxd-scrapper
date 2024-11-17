@@ -27,5 +27,6 @@ export const QUERY_RESULT_STATUS = {
 export const ERROR_MESSAGES = {
     missing_parameters: 'INCOMPLETE PARAMETERS',
     not_valid_url: 'YOU NEED TO SUBMIT A VALID LETTERBOXD URL',
-    try_catch_failed: 'THERE WAS A SYSTEM ERROR PROCESSING THE REQUEST'
+    try_catch_failed: 'THERE WAS A SYSTEM ERROR PROCESSING THE REQUEST',
+    page_not_found: 'PAGE NOT FOUND'
 } as const;

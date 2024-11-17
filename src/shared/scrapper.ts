@@ -44,7 +44,7 @@ const getPageInstance = async (
       return {
         status: QUERY_RESULT_STATUS.not_found,
         page: null,
-        errorMessage: null,
+        errorMessage: ERROR_MESSAGES.page_not_found,
       };
     }
 
