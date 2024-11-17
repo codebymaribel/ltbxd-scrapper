@@ -20,10 +20,15 @@ export const searchFilm = async (params) => {
         data: [],
       };
 
-    const moviesArray = (await findingMovieTitle(
-      page,
-      formattedTitle
-    )) as MovieSearchProps[];
+    const findMovies = await findingMovieTitle(page, formattedTitle);
+
+    if (findMovies.status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status: QUERY_RESULT_STATUS.failed,
+        data: [],
+      };
+
+    const moviesArray = findMovies.data as MovieSearchProps[];
 
     return {
       status: QUERY_RESULT_STATUS.ok,

@@ -1,6 +1,5 @@
 import scrapper from "@/scrapper";
-import { MAIN_URL } from "@/config";
-import { takeScreenshot } from "@/helpers";
+import { MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { MovieSearchProps } from "@/types";
 import { Page } from "puppeteer";
 
@@ -14,11 +13,25 @@ export const findingMovieTitle = async (page: Page, title: string) => {
       page
     );
 
-    if (!checkIfSelectorExists) return [];
+    if (checkIfSelectorExists.status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status: checkIfSelectorExists.status,
+        data: [],
+      };
+
+    if (!checkIfSelectorExists.response)
+      return {
+        status: QUERY_RESULT_STATUS.ok,
+        data: [],
+      };
 
     const moviesWithTitle = await page.$$(selector);
 
-    if (moviesWithTitle.length === 0) return moviesWithTitle;
+    if (moviesWithTitle.length === 0)
+      return {
+        status: QUERY_RESULT_STATUS.ok,
+        data: moviesWithTitle,
+      };
 
     for (const movieContainer of moviesWithTitle) {
       const filmLink = await page.evaluate(
@@ -35,9 +48,14 @@ export const findingMovieTitle = async (page: Page, title: string) => {
         poster: filmPoster,
       });
     }
-    return moviesArray;
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      data: moviesArray,
+    };
   } catch (err) {
-    console.log(err);
-    return [];
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      data: [],
+    };
   }
 };

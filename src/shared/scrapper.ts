@@ -84,12 +84,24 @@ const preventElementLoad = async (page: Page, elements: String[]) => {
 };
 
 const checkIfSelectorExists = async (selectorString: string, page: Page) => {
-  const doesSelectorExists = page
-    .waitForSelector(selectorString, { timeout: 1000 })
-    .then(() => true)
-    .catch(() => false);
+  try {
+    const doesSelectorExists = page
+      .waitForSelector(selectorString, { timeout: 1000 })
+      .then(() => true)
+      .catch(() => false);
 
-  return doesSelectorExists;
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      response: doesSelectorExists,
+      errorMessage: null,
+    };
+  } catch (error) {
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      response: null,
+      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+    };
+  }
 };
 
 const checkIfContainerHasChildren = async (page: Page) => {
@@ -97,10 +109,17 @@ const checkIfContainerHasChildren = async (page: Page) => {
     const filmElementExists: boolean = await page
       .$$eval("div.film-poster", (elementsArray) => elementsArray.length > 0)
       .catch(() => false);
-    return filmElementExists;
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      response: filmElementExists,
+      errorMessage: null,
+    };
   } catch (error) {
-    //TODO como validar el error del catch apropiadamente
-    return false;
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      response: null,
+      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+    };
   }
 };
 

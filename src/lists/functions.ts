@@ -73,7 +73,15 @@ export const listFilms = async (url: string, posters: boolean) => {
 
       await scrapper.gotoNextPage(page, `${MAIN_URL + nextPageURL}`);
 
-      await scrapper.checkIfSelectorExists(".paginate-nextprev", page);
+      const checkIfSelectorExists = await scrapper.checkIfSelectorExists(
+        ".paginate-nextprev",
+        page
+      );
+
+      if (checkIfSelectorExists.status !== QUERY_RESULT_STATUS.ok)
+        allDataCollected = true;
+      await scrapper.closeBrowser(page);
+      break;
     }
 
     return {
@@ -81,7 +89,6 @@ export const listFilms = async (url: string, posters: boolean) => {
       data: listData,
       errorMessage: null,
     } as QueryResponseProps;
-    
   } catch (error) {
     return {
       status: QUERY_RESULT_STATUS.failed,
@@ -91,20 +98,21 @@ export const listFilms = async (url: string, posters: boolean) => {
   }
 };
 
-const getFilmsArray = async ({
-  page,
-  posters = true,
-}: ListScrapperProps) => {
+const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
   try {
     const listExistsOnPage = await scrapper.checkIfContainerHasChildren(page);
     const moviesData: MovieObjectProps[] = [];
 
-    if (!listExistsOnPage) {
+    if (listExistsOnPage.status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status: listExistsOnPage.status,
+        data: [],
+      };
+    if (!listExistsOnPage.response)
       return {
         status: QUERY_RESULT_STATUS.ok,
         data: [],
       };
-    }
 
     const moviesContainers = await page.$$("div.film-poster");
 
@@ -119,7 +127,7 @@ const getFilmsArray = async ({
       if (posters)
         poster = await movie.$eval(" div > img", (result) =>
           result.getAttribute("src")
-        ); //TODO title is returning null
+        );
 
       if (id.value === null || title.value === null || slug.value === null) {
         continue;
