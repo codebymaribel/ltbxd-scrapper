@@ -32,8 +32,16 @@ export const listFilms = async (url: string, posters: boolean) => {
 
     const nextPageLink = await scrapper.getNextPageURL(page);
 
-    if (!nextPageLink) {
+    if (nextPageLink.status !== QUERY_RESULT_STATUS.ok)
+      return {
+        status: nextPageLink.status,
+        data: [],
+        errorMessage: nextPageLink.errorMessage,
+      } as QueryResponseProps;
+
+    if (!nextPageLink.response) {
       const filmsArray = await getFilmsArray({ page, posters });
+      await scrapper.closeBrowser(page);
 
       if (filmsArray.status !== QUERY_RESULT_STATUS.ok) {
         return {
@@ -42,7 +50,6 @@ export const listFilms = async (url: string, posters: boolean) => {
           errorMessage: ERROR_MESSAGES.try_catch_failed,
         } as QueryResponseProps;
       }
-      await scrapper.closeBrowser(page);
 
       return {
         status: QUERY_RESULT_STATUS.ok,
@@ -56,6 +63,13 @@ export const listFilms = async (url: string, posters: boolean) => {
 
       const nextPageURL = await scrapper.getNextPageURL(page);
 
+      if (nextPageURL.status !== QUERY_RESULT_STATUS.ok)
+        return {
+          status: nextPageURL.status,
+          data: [],
+          errorMessage: nextPageURL.errorMessage,
+        } as QueryResponseProps;
+
       if (currentPageFilms?.status !== QUERY_RESULT_STATUS.ok)
         return {
           status: currentPageFilms.status,
@@ -65,13 +79,12 @@ export const listFilms = async (url: string, posters: boolean) => {
 
       listData.push(...currentPageFilms.data);
 
-      if (!nextPageURL) {
+      if (!nextPageURL.response) {
         allDataCollected = true;
-        await scrapper.closeBrowser(page);
         break;
       }
 
-      await scrapper.gotoNextPage(page, `${MAIN_URL + nextPageURL}`);
+      await scrapper.gotoNextPage(page, `${MAIN_URL + nextPageURL.response}`);
 
       const checkIfSelectorExists = await scrapper.checkIfSelectorExists(
         ".paginate-nextprev",
@@ -84,6 +97,7 @@ export const listFilms = async (url: string, posters: boolean) => {
       break;
     }
 
+    await scrapper.closeBrowser(page);
     return {
       status: QUERY_RESULT_STATUS.ok,
       data: listData,

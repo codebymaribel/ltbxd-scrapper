@@ -58,7 +58,7 @@ const getPageInstance = async (
     return {
       status: QUERY_RESULT_STATUS.error,
       page: null,
-      errorMessage: null,
+      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
     };
   }
 };
@@ -85,7 +85,7 @@ const preventElementLoad = async (page: Page, elements: String[]) => {
 
 const checkIfSelectorExists = async (selectorString: string, page: Page) => {
   try {
-    const doesSelectorExists = page
+    const doesSelectorExists = await page
       .waitForSelector(selectorString, { timeout: 1000 })
       .then(() => true)
       .catch(() => false);
@@ -130,12 +130,17 @@ const getNextPageURL = async (page: Page) => {
       ? await page.evaluate((el) => el.getAttribute("href"), nextPageContainer)
       : null;
 
-    if (!nextPageLink) return null;
-
-    return nextPageLink;
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      response: nextPageLink,
+      errorMessage: null,
+    };
   } catch (error) {
-    //TODO como validar el error del catch apropiadamente
-    return null;
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      response: null,
+      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+    };
   }
 };
 
