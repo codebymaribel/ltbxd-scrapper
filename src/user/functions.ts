@@ -1,38 +1,44 @@
-import { MAIN_URL } from "@/config";
+import { MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { ListCardProps, PromiseAllSettledProps } from "@/types";
 
 export const listSummary = async ({ page }) => {
-  const listsArray: ListCardProps[]= [];
-  const listContainers = await page.$$(".list-set > section.list");
+  try {
+    const listsArray: ListCardProps[] = [];
+    const listContainers = await page.$$(".list-set > section.list");
 
-  for (const section of listContainers) {
-    const [movieListID, title, movieURLSlug] = (await Promise.allSettled([
-      await page.evaluate(
-        (el) => el.getAttribute("data-film-list-id"),
-        section
-      ),
-      await section.$eval(".film-list-summary > h2", (el) => el.textContent),
-      await section.$eval("a", (el) => el.getAttribute("href")),
-    ])) as PromiseAllSettledProps<string|null>[];
+    for (const section of listContainers) {
+      const [movieListID, title, movieURLSlug] = (await Promise.allSettled([
+        await page.evaluate(
+          (el) => el.getAttribute("data-film-list-id"),
+          section
+        ),
+        await section.$eval(".film-list-summary > h2", (el) => el.textContent),
+        await section.$eval("a", (el) => el.getAttribute("href")),
+      ])) as PromiseAllSettledProps<string | null>[];
 
-    if (
-      movieListID.status !== "fulfilled" ||
-      title.status !== "fulfilled" ||
-      movieURLSlug.status !== "fulfilled" ||
-      movieListID.value !== "null" ||
-      title.value !== "null" ||
-      movieURLSlug.value !== "null"
-    )
-      continue;
+      if (
+        movieListID.value === null ||
+        title.value === null ||
+        movieURLSlug.value === null
+      )
+        continue;
 
-    const url = `${MAIN_URL + movieURLSlug}`;
+      const url = `${MAIN_URL + movieURLSlug.value}`;
 
-    listsArray.push({
-      id: movieListID.value,
-      title: title.value,
-      url,
-    });
+      listsArray.push({
+        id: movieListID.value,
+        title: title.value,
+        url,
+      });
+    }
+    return {
+      status: QUERY_RESULT_STATUS.ok,
+      data: listsArray,
+    };
+  } catch (err) {
+    return {
+      status: QUERY_RESULT_STATUS.error,
+      data: [],
+    };
   }
-
-  return listsArray;
 };

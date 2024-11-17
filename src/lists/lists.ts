@@ -5,7 +5,12 @@ import {
   QUERY_RESULT_STATUS,
 } from "@/config";
 import scrapper from "@/scrapper";
-import { ListMoviesProps, ListCardProps, UserQueryProps } from "@/types";
+import {
+  ListMoviesProps,
+  ListCardProps,
+  UserQueryProps,
+  QueryResponseProps,
+} from "@/types";
 import { listSummary } from "../user/functions";
 import { listFilms } from "./functions";
 
@@ -29,7 +34,7 @@ export const getPublicLists = async (user: UserQueryProps) => {
   const { username } = user;
 
   try {
-    const { status, page } = await scrapper.getPageInstance(
+    const { status, page, errorMessage } = await scrapper.getPageInstance(
       `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
     );
 
@@ -38,6 +43,7 @@ export const getPublicLists = async (user: UserQueryProps) => {
       return {
         status,
         data: [],
+        errorMessage,
       };
     }
 
@@ -47,21 +53,38 @@ export const getPublicLists = async (user: UserQueryProps) => {
     );
 
     if (!areThereAnyLists) {
+      await scrapper.closeBrowser(page);
       return {
         status: QUERY_RESULT_STATUS.ok,
         data: [],
+        errorMessage: null,
       };
     }
 
-    const listsArray: ListCardProps[] = await listSummary({ page });
+    const getLists = await listSummary({ page });
+
+    if (getLists.status !== QUERY_RESULT_STATUS.ok) {
+      return {
+        status: QUERY_RESULT_STATUS.failed,
+        data: [],
+        errorMessage: ERROR_MESSAGES.try_catch_failed,
+      } as QueryResponseProps;
+    }
+
+    const listsArray: ListCardProps[] = getLists.data;
 
     await scrapper.closeBrowser(page);
 
     return {
       status: QUERY_RESULT_STATUS.ok,
       data: listsArray,
-    };
+      errorMessage: null,
+    } as QueryResponseProps;
   } catch (error) {
-    console.log(error);
+    return {
+      status: QUERY_RESULT_STATUS.failed,
+      data: [],
+      errorMessage: ERROR_MESSAGES.try_catch_failed,
+    } as QueryResponseProps;
   }
 };
