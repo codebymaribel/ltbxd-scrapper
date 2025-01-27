@@ -2,9 +2,9 @@
   "name": "ltbxd-scrapper",
   "version": "1.0.0",
   "description": "A letterboxd scrapper for public data.",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/codebymaribel/ltbxd-scrapper"
@@ -25,7 +25,8 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
-    "build": "tsup"
+    "format": "prettier --write .",
+    "build": "webpack"
   },
   "dependencies": {
     "puppeteer": "^23.1.1"
@@ -33,20 +34,22 @@
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@types/express": "^4.17.21",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^22.5.0",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.1.4",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.2.0",
-    "@types/module-alias": "^2.0.4",
-    "module-alias": "^2.2.3"
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "_moduleAliases": {
     "@/helpers": "src/shared/function-helpers.ts",
-    "@/scrapper":"src/shared/scrapper.ts",
+    "@/scrapper": "src/shared/scrapper.ts",
     "@/config": "src/config/constants.ts"
   }
 }

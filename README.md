@@ -14,13 +14,12 @@ A scrapper for Letterboxd public data.
 - [Collaboration](#collaboration)
 - [License](#license)
 
-## Key Features
+## Features
 
+- Search film on Letterboxd by title.
 - Get user watchlist films.
 - Get user public lists.
 - Get films from a list by URL.
-- Search film on Letterboxd by title.
-- Search film on Letterboxd by URL.
 
 ## Installation
 
@@ -127,18 +126,6 @@ Here's the list of available functions in this package:
 <br/>
 <br/>
 - <strong>data</strong>: <a href="#lists-search-object">ListsSearchObject[]
-</td>
-</tr>
-<tr>
-<td width="10%">
-<strong>getList</strong> 
-</td>
-<td width="60%">
-<strong>Use: </strong>Get a list data using the URL </br>
-<strong>Requires: </strong> ListQuery
-</td>
-<td width="20%">
-
 </td>
 </tr>
 </table>
