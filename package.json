@@ -26,7 +26,7 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "format": "prettier --write .",
-    "build": "webpack"
+    "build": "tsc"
   },
   "dependencies": {
     "puppeteer": "^23.1.1"
@@ -43,9 +43,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "typescript-eslint": "^8.2.0"
   },
   "_moduleAliases": {
     "@/helpers": "src/shared/function-helpers.ts",
