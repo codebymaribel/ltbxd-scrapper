@@ -3,8 +3,8 @@ import {
   LIST_TYPES,
   MAIN_URL,
   QUERY_RESULT_STATUS,
-} from "@/config";
-import { UserQueryProps } from "@/types";
+} from "../config/constants";
+import { UserQueryProps } from "../types";
 import { listFilms } from "../lists/functions";
 
 /**

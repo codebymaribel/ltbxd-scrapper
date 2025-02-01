@@ -1,12 +1,12 @@
-import scrapper from "@/scrapper/scrapper";
+import scrapper from "../scrapper/scrapper";
 import {
   ListScrapperProps,
   MovieObjectProps,
   MoviePoster,
   PromiseAllSettledProps,
   QueryResponseProps,
-} from "@/types";
-import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
+} from "../types";
+import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "../config/constants";
 
 export const listFilms = async (url: string, posters: boolean) => {
   let allDataCollected = false;
@@ -21,7 +21,7 @@ export const listFilms = async (url: string, posters: boolean) => {
       "manifest",
     ]);
 
-    if (status !== QUERY_RESULT_STATUS.ok) {
+    if (status !== QUERY_RESULT_STATUS.ok || !page) {
       if (page) await scrapper.closeBrowser(page);
       return {
         status,

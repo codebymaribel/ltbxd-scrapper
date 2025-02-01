@@ -1,5 +1,5 @@
-import { MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
-import { ListCardProps, PromiseAllSettledProps } from "@/types";
+import { MAIN_URL, QUERY_RESULT_STATUS } from "../config/constants";
+import { ListCardProps, PromiseAllSettledProps } from "../types";
 
 export const listSummary = async ({ page }) => {
   try {

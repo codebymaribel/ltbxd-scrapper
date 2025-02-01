@@ -1,8 +1,8 @@
-import scrapper from "@/scrapper/scrapper";
-import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
+import scrapper from "../scrapper/scrapper";
+import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "../config/constants";
 import { findingMovieTitle } from "./functions";
-import { MovieSearchProps, QueryResponseProps } from "@/types";
-import { formatStringToMovieTitle } from "@/tools/tools";
+import { MovieSearchProps, QueryResponseProps } from "../types";
+import { formatStringToMovieTitle } from "../tools/tools";
 
 export const searchFilm = async (params) => {
   const { title } = params;
@@ -15,7 +15,7 @@ export const searchFilm = async (params) => {
       ["image", "font", "media", "manifest"]
     );
 
-    if (status !== QUERY_RESULT_STATUS.ok)
+    if (status !== QUERY_RESULT_STATUS.ok || !page)
       return {
         status,
         data: [],

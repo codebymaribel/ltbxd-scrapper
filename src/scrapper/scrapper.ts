@@ -1,6 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
-import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from "@/config";
-import { checkIfValidURL } from "@/tools/tools";
+import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from "../config/constants";
+import { checkIfValidURL } from "../tools/tools";
 
 const getPageInstance = async (
   url: string,

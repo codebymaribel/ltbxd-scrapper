@@ -3,14 +3,14 @@ import {
   LIST_TYPES,
   MAIN_URL,
   QUERY_RESULT_STATUS,
-} from "@/config";
-import scrapper from "@/scrapper/scrapper";
+} from "../config/constants";
+import scrapper from "../scrapper/scrapper";
 import {
   ListMoviesProps,
   ListCardProps,
   UserQueryProps,
   QueryResponseProps,
-} from "@/types";
+} from "../types";
 import { listSummary } from "../user/functions";
 import { listFilms } from "./functions";
 
@@ -38,7 +38,7 @@ export const getPublicLists = async (user: UserQueryProps) => {
       `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
     );
 
-    if (status !== QUERY_RESULT_STATUS.ok) {
+    if (status !== QUERY_RESULT_STATUS.ok || !page) {
       if (page) await scrapper.closeBrowser(page);
       return {
         status,

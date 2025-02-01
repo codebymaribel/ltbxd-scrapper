@@ -1,4 +1,4 @@
-import { QUERY_RESULT_STATUS } from "@/config";
+import { QUERY_RESULT_STATUS } from "../config/constants";
 
 export * from "./list";
 export * from "./user";
