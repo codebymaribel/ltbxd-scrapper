@@ -1,4 +1,4 @@
-import scrapper from "@/scrapper";
+import scrapper from "@/scrapper/scrapper";
 import {
   ListScrapperProps,
   MovieObjectProps,

@@ -1,8 +1,8 @@
-import scrapper from "@/scrapper";
+import scrapper from "@/scrapper/scrapper";
 import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { findingMovieTitle } from "./functions";
 import { MovieSearchProps, QueryResponseProps } from "@/types";
-import { formatStringToMovieTitle } from "@/helpers";
+import { formatStringToMovieTitle } from "@/tools/tools";
 
 export const searchFilm = async (params) => {
   const { title } = params;

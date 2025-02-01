@@ -1,4 +1,4 @@
-import scrapper from "@/scrapper";
+import scrapper from "@/scrapper/scrapper";
 import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "@/config";
 import { MovieSearchProps, PromiseAllSettledProps } from "@/types";
 import { Page } from "puppeteer";

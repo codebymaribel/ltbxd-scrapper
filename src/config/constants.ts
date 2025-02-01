@@ -14,7 +14,7 @@ export const LIST_TYPES = {
     watchlist: 'watchlist',
     films: 'films',
     lists: 'lists'
-} as const;
+};
 
 export const QUERY_RESULT_STATUS = {
     ok: 'OK',
@@ -22,7 +22,7 @@ export const QUERY_RESULT_STATUS = {
     pending: 'PENDING',
     not_found: '404',
     error: 'ERROR'
-} as const;
+};
 
 export const ERROR_MESSAGES = {
     missing_parameters: 'INCOMPLETE PARAMETERS',

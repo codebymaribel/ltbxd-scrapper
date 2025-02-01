@@ -1,6 +1,9 @@
 {
+  "engines": {
+    "node": ">=20.6.0"
+  },
   "name": "ltbxd-scrapper",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A letterboxd scrapper for public data.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -23,9 +26,9 @@
     "email": "codebymaribel@gmail.com"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts eslint /src",
     "format": "prettier --write .",
+    "lint": "eslint ./src",
     "build": "tsc"
   },
   "dependencies": {
@@ -37,6 +40,7 @@
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.5.0",
     "eslint": "^9.9.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.9.0",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.4",
@@ -46,8 +50,9 @@
     "typescript-eslint": "^8.2.0"
   },
   "_moduleAliases": {
-    "@/helpers": "src/shared/function-helpers.ts",
-    "@/scrapper": "src/shared/scrapper.ts",
-    "@/config": "src/config/constants.ts"
+    "@": "./dist",
+    "@/helpers": "./src/tools/tools.ts",
+    "@/scrapper": "./src/scrapper/scrapper.ts",
+    "@/config": "./src/config/constants.ts"
   }
 }

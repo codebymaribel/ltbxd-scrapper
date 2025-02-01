@@ -1,26 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es2022",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "ES2020",                                /* Specify what module code is generated. */
+    "target": "esnext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "nodenext",                                /* Specify what module code is generated. */
+    "moduleResolution": "nodenext",
     "rootDir": "./src",                                  /* Specify the root folder within your source files. */
     "outDir": "./dist", 
     "declaration": true,
     "declarationMap": true,                              /* Allow 'import x from y' when a module doesn't have a default export. */
     "paths": {
-      "@/types": ["./types/index.d.ts"],
-      "@/scrapper" : ["./src/shared/scrapper.ts"],
-      "@/helpers": ["./src/shared/function-helpers.ts"],
-      "@/config":["./src/config/constants.ts"]
+      "@/*": ["src/*"],
+      "@/scrapper" : ["src/scrapper/scrapper.ts"],
+      "@/helpers": ["src/tools/tools.ts"],
+      "@/config":["src/config/constants.ts"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     "esModuleInterop": true,                             /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
     "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "moduleResolution": "node" ,
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
     "noImplicitAny": false,                            /* Enable error reporting when local variables aren't read. */
     "noUnusedParameters": true,                        /* Skip type checking .d.ts files that are included with TypeScript. */
+      "noUnusedLocals": true,
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*.ts", "types/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

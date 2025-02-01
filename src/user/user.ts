@@ -4,9 +4,7 @@ import {
   MAIN_URL,
   QUERY_RESULT_STATUS,
 } from "@/config";
-import { ListCardProps, UserQueryProps } from "@/types";
-import { listSummary } from "./functions";
-import scrapper from "../shared/scrapper";
+import { UserQueryProps } from "@/types";
 import { listFilms } from "../lists/functions";
 
 /**

@@ -4,7 +4,7 @@ import {
   MAIN_URL,
   QUERY_RESULT_STATUS,
 } from "@/config";
-import scrapper from "@/scrapper";
+import scrapper from "@/scrapper/scrapper";
 import {
   ListMoviesProps,
   ListCardProps,

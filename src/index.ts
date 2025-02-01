@@ -1,11 +1,12 @@
 import "module-alias/register";
-import { getWatchlist } from "./user/user";
-import { getListFilms, getPublicLists } from "./lists/lists";
-import { searchFilm } from "./film/film";
+export { getWatchlist } from "./user/user";
+export { getListFilms, getPublicLists } from "./lists/lists";
+export { searchFilm } from "./film/film";
 
-export const ltbxdScrapper = {
-  getWatchlist,
-  getListFilms,
-  getPublicLists,
-  searchFilm,
-};
+const ltbxdScrapper = () => {
+    console.log('a')
+}
+
+ltbxdScrapper()
+
+export default ltbxdScrapper
