@@ -78,25 +78,25 @@ Here's the list of available functions in this package:
 
 - **Use**: get user watchlist films.
 - **Requires**: {**username**: letterboxd username, **options**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">query options object</a>}
-- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object">Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
+- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object">Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ### getListFilms
 
 - **Use**: returns an array of objects with the user's list data
 - **Requires**: {**url**: letterboxd list URL, **options**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">query options object</a>}
-- **Returns**: <a href="https://google.com">List Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
+- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object">Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ### getUserLists
 
 - **Use**: get user public lists names and IDs.
 - **Requires**: {**username**: letterboxd username}
-- **Returns**: <a href="#lists-search-object">User Lists Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
+- **Returns**: <a href="#lists-search-object">User Lists Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ### searchFilm
 
 - **Use**: searches for films results based on a string.
 - **Requires**: film title string
-- **Returns**: <a href="#film-search-object"> Film Search Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
+- **Returns**: <a href="#film-search-object"> Film Search Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ---
 
@@ -113,27 +113,25 @@ Here's the list of available functions in this package:
     }
 ```
 
-#### Film Search Object
+#### User Lists Object
 
 ```javascript
-{
-}
+  {
+    id: '58079975',
+    title: ' The 97th Academy Award nominees for Best Costume Design',
+    url: 'https://letterboxd.com/oscars/list/the-97th-academy-award-nominees-for-best-10/'
+  }
 ```
-
-- **title**: film title.
-- **pageURL**: film page URL on Letterboxd.
-- **poster**: film poster (rezised from letterboxd website).
 
 #### Lists Search Object
 
 ```javascript
-{
-}
+  {
+    title: "The Brutalist",
+    pageURL: "https://letterboxd.com/film/the-brutalist/",
+    poster: "https://s.ltrbxd.com/static/img/empty-poster-125.f760b9b5.png"
+  }
 ```
-
-- **id**: Letterboxd list ID.
-- **title**: list title.
-- **url**: list page URL on Letterboxd.
 
 #### Options Object
 
@@ -149,7 +147,7 @@ Here's the list of available functions in this package:
 
 ```javascript
 {
-  status: "FAILED", // 
+  status: "FAILED", //
   data: [],
   errorMessage: string,
 }
@@ -184,6 +182,6 @@ For more info about the types please refer to the [types folder](./src/types/ind
 
 ---
 
-Made with ❤ by [Maribel Hernandez](https://github.com/codebymaribel)
+Made with ❤ by [CodebyMaribel](https://github.com/codebymaribel)
 
 ---
