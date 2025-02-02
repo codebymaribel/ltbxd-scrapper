@@ -90,13 +90,13 @@ Here's the list of available functions in this package:
 
 - **Use**: get user public lists names and IDs.
 - **Requires**: {**username**: letterboxd username}
-- **Returns**: <a href="#lists-search-object">User Lists Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
+- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#lists-search-object">User Lists Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ### searchFilm
 
 - **Use**: searches for films results based on a string.
 - **Requires**: film title string
-- **Returns**: <a href="#film-search-object"> Film Search Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
+- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#lists-search-object"> Film Search Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#query-response">Query Response Object</a>
 
 ---
 
@@ -127,9 +127,9 @@ Here's the list of available functions in this package:
 
 ```javascript
   {
-    title: "The Brutalist",
-    pageURL: "https://letterboxd.com/film/the-brutalist/",
-    poster: "https://s.ltrbxd.com/static/img/empty-poster-125.f760b9b5.png"
+    title: 'The Brutalist',
+    pageURL: 'https://letterboxd.com/film/the-brutalist/',
+    poster: 'https://s.ltrbxd.com/static/img/empty-poster-125.f760b9b5.png'
   }
 ```
 
@@ -170,7 +170,7 @@ Here's the list of available functions in this package:
 
 ## Types
 
-For more info about the types please refer to the [types folder](./src/types/index.d.ts)
+For more info about the types please refer to the [types ](./src/types)
 
 ## 🤝 Contributing
 

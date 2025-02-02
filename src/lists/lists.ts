@@ -18,7 +18,7 @@ import { listFilms } from "./functions";
  * @summary Returns an array of objects with the user's list data
  * @param {string} url - List URL
  * @param {object} options - Query {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object| Options Object}
- * @returns {object}  {@link https://google.com | List Film Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
+ * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object | Film Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
 
 export const getListFilms = async ({url, options}: ListMoviesProps) => {
@@ -32,7 +32,7 @@ export const getListFilms = async ({url, options}: ListMoviesProps) => {
 /**
  * @summary Returns an array of user public lists names and IDs
  * @param {string} username - letterboxd username
- * @returns {object}  {@link https://google.com | ListsSearchObject[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
+ * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#lists-search-object | User Lists Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
 export const getUserLists = async ({username}: UserQueryProps) => {
 
