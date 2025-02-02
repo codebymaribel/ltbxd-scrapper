@@ -1,4 +1,4 @@
-# ltbxd-scrapper
+# ltbxdscrapper
 
 A scrapper for Letterboxd public data.
 
@@ -14,17 +14,21 @@ A scrapper for Letterboxd public data.
 - [Collaboration](#collaboration)
 - [License](#license)
 
+---
+
 ## Features
 
-- Search film on Letterboxd by title.
 - Get user watchlist films.
+- Get films from a public list by URL.
 - Get user public lists.
-- Get films from a list by URL.
+- Search films on Letterboxd by title.
+
+---
 
 ## Installation
 
 ```bash
-npm install ltbxd-scrapper
+npm install ltbxdscrapper
 ```
 
 ## Usage
@@ -33,13 +37,13 @@ npm install ltbxd-scrapper
 
 ```javascript
 // Require letterboxd scrapper library
-import ltbxdscrapper from "ltbxd-scrapper";
+import ltbxdscrapper from 'ltbxdscrapper';
 ```
 
 ### Use example
 
 ```javascript
-import ltbxdscrapper from "ltbxd-scrapper";
+import ltbxdscrapper from "ltbxdscrapper";
 
 const userwatchlist = await ltbxdscrapper.getWatchlist({
   username: "username",
@@ -59,120 +63,62 @@ const userwatchlist = await ltbxdscrapper.getWatchlist({
             slug: 'persepolis',
             poster: 'https://a.ltrbxd.com/resized/sm/upload/28/um/1t/jq/dYvyF1RlNokAd1N7Nek0vDpYsV6-0-125-0-187-crop.jpg?v=fc5d71c744'
         }
-    ]
+    ],
+    errorMessage: null,
 }
 ```
+
+---
 
 ## Functions
 
 Here's the list of available functions in this package:
 
-<table>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Returns</th>
-</tr>
-<tr>
-<th></th>
-<th>Film</th>
-<th></th>
-</tr>
-<tr>
-<td width="10%">
-<strong>searchFilm</strong> 
-</td>
-<td width="50%">
-<strong>Use: </strong>Searches for films results based on a string.</br>
-<strong>Requires: </strong>string.
-</td>
-<td width="40%">
-- <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
-<br/>
-<br/>
-- <strong>data:</strong><a href="#film-search-object"> FilmSearchObject[]</a> 
-</td>
-</tr>
-<tr>
-<th></th>
-<th>Lists</th>
-<th></th>
-</tr>
-<tr>
-<td width="10%">
-<strong>getWatchlist</strong> 
-</td>
-<td width="50%">
-<strong>Use: </strong>Get user watchlist films </br>
-<strong>Requires: </strong> <a href="#query-parameters">UserQuery</a> 
-</td>
-<td width="40%">
-- <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
-<br/>
-<br/>
-- <strong>data</strong>: <a href="#film-object">FilmObject[]</a> 
-</td>
-</tr>
-<tr>
-<td width="10%">
-<strong>getPublicLists</strong> 
-</td>
-<td width="60%">
-<strong>Use: </strong>Get user public lists names and IDs</br>
-<strong>Requires: </strong> <a href="#query-parameters">UserListsParams</a>
-</td>
-<td width="20%">
-- <strong>status</strong>: a string with the status of the request. The available status can be found in the <a href="#query-status">query status</a> section.
-<br/>
-<br/>
-- <strong>data</strong>: <a href="#lists-search-object">ListsSearchObject[]
-</td>
-</tr>
-</table>
+### getWatchlist
 
-## Query Parameters
+- **Use**: get user watchlist films.
+- **Requires**: {**username**: letterboxd username, **options**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">query options object</a>}
+- **Returns**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object">Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
 
-<table>
-<tr>
-<th>Query</th>
-<th>Parameters</th>
-</tr>
-<tr id="watchlistParams">
-<td>
-<strong>WatchlistParams</strong>
-</td>
-<td>
-{<br/>
-  <strong>username</strong>: letterboxd username, <br/>
-  <strong>options</strong>: <a href="#options-params">options object</a> (optional)<br/>
-  }
-</td>
-</tr>
-<tr id="userListParams">
-<td>
-<strong>UserListParams</strong>
-</td>
-<td>
-{ <strong>username</strong>: letterboxd username }
-</td>
+### getListFilms
 
-</tr>
-</table>
+- **Use**: returns an array of objects with the user's list data
+- **Requires**: {**url**: letterboxd list URL, **options**: <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">query options object</a>}
+- **Returns**: <a href="https://google.com">List Film Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
 
-#### Options Object
+### getUserLists
 
-- **poster**: if false returns film data without the letterboxd poster, if not specified returns always true.
+- **Use**: get user public lists names and IDs.
+- **Requires**: {**username**: letterboxd username}
+- **Returns**: <a href="#lists-search-object">User Lists Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
 
-## Response Objects
+### searchFilm
+
+- **Use**: searches for films results based on a string.
+- **Requires**: film title string
+- **Returns**: <a href="#film-search-object"> Film Search Object[]</a> in the data param of the <a href="https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object">Query Response Object</a>
+
+---
+
+## Query Objects
 
 #### Film Object
 
-- **id**: Letterboxd film ID.
-- **title**: film title.
-- **slug**: film slug (this is what they use for the films URL).
-- **poster**: film poster (rezised from letterboxd website).
+```javascript
+    {
+      id: '478428', // Letterboxd film ID.
+      title: 'The Brutalist', // film title.
+      slug: 'the-brutalist', // film slug (this is what they use for the films URL).
+      poster: 'https://s.ltrbxd.com/static/img/empty-poster-125.f760b9b5.png' // film poster (rezised from letterboxd website).
+    }
+```
 
 #### Film Search Object
+
+```javascript
+{
+}
+```
 
 - **title**: film title.
 - **pageURL**: film page URL on Letterboxd.
@@ -180,9 +126,34 @@ Here's the list of available functions in this package:
 
 #### Lists Search Object
 
+```javascript
+{
+}
+```
+
 - **id**: Letterboxd list ID.
 - **title**: list title.
 - **url**: list page URL on Letterboxd.
+
+#### Options Object
+
+```javascript
+{
+  poster: false; // If false returns film data without the letterboxd poster, if not specified returns always true.
+}
+```
+
+### Query Response
+
+#### Query Response Object
+
+```javascript
+{
+  status: "FAILED", // 
+  data: [],
+  errorMessage: string,
+}
+```
 
 #### Query status
 
@@ -191,9 +162,17 @@ Here's the list of available functions in this package:
 - **FAILED** -> There was an issue completing the request.
 - **PENDING** -> The request is not resolved yet.
 
+#### Error Messages
+
+- INCOMPLETE PARAMETERS
+- YOU NEED TO SUBMIT A VALID LETTERBOXD URL
+- THERE WAS A SYSTEM ERROR PROCESSING THE REQUEST
+- PAGE NOT FOUND
+- SCRAPPER METHOD FAILED
+
 ## Types
 
-For more info about the types please refer to the [types folder](./types/)
+For more info about the types please refer to the [types folder](./src/types/index.d.ts)
 
 ## 🤝 Contributing
 

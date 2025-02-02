@@ -15,23 +15,26 @@ import { listSummary } from "../user/functions";
 import { listFilms } from "./functions";
 
 /**
- * @description Returns an array of objects with the user's list data
- * @param {String} title - List title in Letterboxd
- * @param {String} url - List URL
- * @param {Object} options - options object
- * @returns {ListMovieMetadataProps[] || ListMovieWithPosterProps[]}  - An array of Objects with movies data
+ * @summary Returns an array of objects with the user's list data
+ * @param {string} url - List URL
+ * @param {object} options - Query {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object| Options Object}
+ * @returns {object}  {@link https://google.com | List Film Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
 
-export const getListFilms = async (params: ListMoviesProps) => {
-  const posters = params.options?.posters || true;
+export const getListFilms = async ({url, options}: ListMoviesProps) => {
+  const posters = options?.posters || true;
 
-  const listMovies = await listFilms(params.url, posters);
+  const listMovies = await listFilms(url, posters);
 
   return listMovies;
 };
 
-export const getPublicLists = async (user: UserQueryProps) => {
-  const { username } = user;
+/**
+ * @summary Returns an array of user public lists names and IDs
+ * @param {string} username - letterboxd username
+ * @returns {object}  {@link https://google.com | ListsSearchObject[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
+ */
+export const getUserLists = async ({username}: UserQueryProps) => {
 
   try {
     const { status, page, errorMessage } = await scrapper.getPageInstance(
@@ -44,7 +47,7 @@ export const getPublicLists = async (user: UserQueryProps) => {
         status,
         data: [],
         errorMessage,
-      };
+      } as QueryResponseProps;
     }
 
     const areThereAnyLists = await scrapper.checkIfSelectorExists(
@@ -58,7 +61,7 @@ export const getPublicLists = async (user: UserQueryProps) => {
         status: QUERY_RESULT_STATUS.ok,
         data: [],
         errorMessage: null,
-      };
+      } as QueryResponseProps;
     }
 
     const getLists = await listSummary({ page });
