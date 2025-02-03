@@ -1,12 +1,16 @@
-import scrapper from "../scrapper/scrapper";
+import scrapper from '../scrapper/scrapper';
 import {
   ListScrapperProps,
   MovieObjectProps,
   MoviePoster,
   PromiseAllSettledProps,
   QueryResponseProps,
-} from "../types";
-import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "../config/constants";
+} from '../types';
+import {
+  ERROR_MESSAGES,
+  MAIN_URL,
+  QUERY_RESULT_STATUS,
+} from '../config/constants';
 
 export const listFilms = async (url: string, posters: boolean) => {
   let allDataCollected = false;
@@ -14,11 +18,11 @@ export const listFilms = async (url: string, posters: boolean) => {
 
   try {
     const { status, page, errorMessage } = await scrapper.getPageInstance(url, [
-      "script",
-      "image",
-      "font",
-      "media",
-      "manifest",
+      'script',
+      'image',
+      'font',
+      'media',
+      'manifest',
     ]);
 
     if (status !== QUERY_RESULT_STATUS.ok || !page) {
@@ -30,7 +34,7 @@ export const listFilms = async (url: string, posters: boolean) => {
       } as QueryResponseProps;
     }
 
-    const nextPageLink = await scrapper.getNextPageURL(page);
+    let nextPageLink = await scrapper.getNextPageURL(page);
 
     if (nextPageLink.status !== QUERY_RESULT_STATUS.ok)
       return {
@@ -61,13 +65,11 @@ export const listFilms = async (url: string, posters: boolean) => {
     while (!allDataCollected) {
       const currentPageFilms = await getFilmsArray({ page, posters });
 
-      const nextPageURL = await scrapper.getNextPageURL(page);
-
-      if (nextPageURL.status !== QUERY_RESULT_STATUS.ok)
+      if (nextPageLink.status !== QUERY_RESULT_STATUS.ok)
         return {
-          status: nextPageURL.status,
+          status: nextPageLink.status,
           data: [],
-          errorMessage: nextPageURL.errorMessage,
+          errorMessage: nextPageLink.errorMessage,
         } as QueryResponseProps;
 
       if (currentPageFilms?.status !== QUERY_RESULT_STATUS.ok)
@@ -79,30 +81,35 @@ export const listFilms = async (url: string, posters: boolean) => {
 
       listData.push(...currentPageFilms.data);
 
-      if (!nextPageURL.response) {
+      nextPageLink = await scrapper.getNextPageURL(page);
+
+      if (!nextPageLink.response) {
         allDataCollected = true;
         break;
       }
 
-      await scrapper.gotoNextPage(page, `${MAIN_URL + nextPageURL.response}`);
+      await scrapper.gotoNextPage(page, `${MAIN_URL + nextPageLink.response}`);
 
       const checkIfSelectorExists = await scrapper.checkIfSelectorExists(
-        ".paginate-nextprev",
-        page
+        '.paginate-nextprev',
+        page,
       );
 
-      if (checkIfSelectorExists.status !== QUERY_RESULT_STATUS.ok)
+      if (checkIfSelectorExists.status !== QUERY_RESULT_STATUS.ok) {
         allDataCollected = true;
-      await scrapper.closeBrowser(page);
-      break;
+        await scrapper.closeBrowser(page);
+        break;
+      }
     }
 
     await scrapper.closeBrowser(page);
+    
     return {
       status: QUERY_RESULT_STATUS.ok,
       data: listData,
       errorMessage: null,
     } as QueryResponseProps;
+
   } catch (error) {
     return {
       status: QUERY_RESULT_STATUS.failed,
@@ -128,19 +135,19 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
         data: [],
       };
 
-    const moviesContainers = await page.$$("div.film-poster");
+    const moviesContainers = await page.$$('div.film-poster');
 
     for (const movie of moviesContainers) {
       let poster: MoviePoster = null;
       const [id, title, slug] = (await Promise.allSettled([
-        await page.evaluate((el) => el.getAttribute("data-film-id"), movie),
-        await movie.$eval("div > img", (result) => result.getAttribute("alt")),
-        await page.evaluate((el) => el.getAttribute("data-film-slug"), movie),
+        await page.evaluate((el) => el.getAttribute('data-film-id'), movie),
+        await movie.$eval('div > img', (result) => result.getAttribute('alt')),
+        await page.evaluate((el) => el.getAttribute('data-film-slug'), movie),
       ])) as PromiseAllSettledProps<string | null>[];
 
       if (posters)
-        poster = await movie.$eval(" div > img", (result) =>
-          result.getAttribute("src")
+        poster = await movie.$eval(' div > img', (result) =>
+          result.getAttribute('src'),
         );
 
       if (id.value === null || title.value === null || slug.value === null) {
