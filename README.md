@@ -59,6 +59,7 @@ const userwatchlist = await ltbxdscrapper.getWatchlist({
     data: [
         {
             id: '50602',
+            imdbID: 'tt0808417',
             title: 'Persepolis',
             slug: 'persepolis',
             poster: 'https://a.ltrbxd.com/resized/sm/upload/28/um/1t/jq/dYvyF1RlNokAd1N7Nek0vDpYsV6-0-125-0-187-crop.jpg?v=fc5d71c744'
@@ -107,6 +108,7 @@ Here's the list of available functions in this package:
 ```javascript
     {
       id: '478428', // Letterboxd film ID.
+      imdbID: 'tt8999762', // IMDB film ID.
       title: 'The Brutalist', // film title.
       slug: 'the-brutalist', // film slug (this is what they use for the films URL).
       poster: 'https://s.ltrbxd.com/static/img/empty-poster-125.f760b9b5.png' // film poster (rezised from letterboxd website).
