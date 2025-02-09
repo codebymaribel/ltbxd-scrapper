@@ -1,5 +1,7 @@
 import scrapper from '../scrapper/scrapper';
+import nameToImdb from 'name-to-imdb';
 import {
+  IMDBID,
   ListScrapperProps,
   MovieObjectProps,
   MoviePoster,
@@ -103,13 +105,12 @@ export const listFilms = async (url: string, posters: boolean) => {
     }
 
     await scrapper.closeBrowser(page);
-    
+
     return {
       status: QUERY_RESULT_STATUS.ok,
       data: listData,
       errorMessage: null,
     } as QueryResponseProps;
-
   } catch (error) {
     return {
       status: QUERY_RESULT_STATUS.failed,
@@ -139,6 +140,8 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
 
     for (const movie of moviesContainers) {
       let poster: MoviePoster = null;
+      let imdbID: IMDBID = null;
+
       const [id, title, slug] = (await Promise.allSettled([
         await page.evaluate((el) => el.getAttribute('data-film-id'), movie),
         await movie.$eval('div > img', (result) => result.getAttribute('alt')),
@@ -154,8 +157,19 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
         continue;
       }
 
+      try {
+        await nameToImdb({ name: title.value }, (err, res, inf) => {
+          if (!err && inf && res) {
+            imdbID = res;
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
       moviesData.push({
         id: id.value,
+        imdbID: imdbID,
         title: title.value,
         slug: slug.value,
         poster,
