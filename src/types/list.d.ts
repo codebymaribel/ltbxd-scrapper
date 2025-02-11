@@ -1,9 +1,10 @@
-import { Page } from "puppeteer";
-import { OptionsProps, UserQueryProps } from "./user";
+import { Page } from 'puppeteer';
+
+import { OptionsProps } from './user';
 
 export interface ListScrapperProps {
   page: Page;
-  posters: Boolean;
+  posters: boolean;
 }
 
 interface ListPosterProps {

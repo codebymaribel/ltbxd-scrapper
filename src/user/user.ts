@@ -3,9 +3,9 @@ import {
   LIST_TYPES,
   MAIN_URL,
   QUERY_RESULT_STATUS,
-} from "../config/constants";
-import { QueryResponseProps, UserQueryProps } from "../types";
-import { listFilms } from "../lists/functions";
+} from '../config/constants';
+import { listFilms } from '../lists/functions';
+import { QueryResponseProps, UserQueryProps } from '../types';
 
 /**
  * @summary Gets user watchlist
@@ -15,7 +15,7 @@ import { listFilms } from "../lists/functions";
  * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object | Film Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
 
-export const getWatchlist = async ({username, options}: UserQueryProps) => {
+export const getWatchlist = async ({ username, options }: UserQueryProps) => {
   const posters = options?.posters || true;
 
   if (!username) {
@@ -28,7 +28,7 @@ export const getWatchlist = async ({username, options}: UserQueryProps) => {
 
   const listMovies = await listFilms(
     `${MAIN_URL}/${username}/${LIST_TYPES.watchlist}/`,
-    posters
+    posters,
   );
 
   return listMovies;

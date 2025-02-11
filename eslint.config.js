@@ -1,8 +1,7 @@
-import globals from 'globals';
 import pluginJs from '@eslint/js';
+import unusedImports from 'eslint-plugin-unused-imports';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import unusedImports from "eslint-plugin-unused-imports";
-
 
 export default [
   {

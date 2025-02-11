@@ -3,16 +3,16 @@ import {
   LIST_TYPES,
   MAIN_URL,
   QUERY_RESULT_STATUS,
-} from "../config/constants";
-import scrapper from "../scrapper/scrapper";
+} from '../config/constants';
+import scrapper from '../scrapper/scrapper';
 import {
-  ListMoviesProps,
   ListCardProps,
-  UserQueryProps,
+  ListMoviesProps,
   QueryResponseProps,
-} from "../types";
-import { listSummary } from "../user/functions";
-import { listFilms } from "./functions";
+  UserQueryProps,
+} from '../types';
+import { listSummary } from '../user/functions';
+import { listFilms } from './functions';
 
 /**
  * @summary Returns an array of objects with the user's list data
@@ -21,7 +21,7 @@ import { listFilms } from "./functions";
  * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object | Film Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
 
-export const getListFilms = async ({url, options}: ListMoviesProps) => {
+export const getListFilms = async ({ url, options }: ListMoviesProps) => {
   const posters = options?.posters || true;
 
   const listMovies = await listFilms(url, posters);
@@ -34,11 +34,10 @@ export const getListFilms = async ({url, options}: ListMoviesProps) => {
  * @param {string} username - letterboxd username
  * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#lists-search-object | User Lists Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
-export const getUserLists = async ({username}: UserQueryProps) => {
-
+export const getUserLists = async ({ username }: UserQueryProps) => {
   try {
     const { status, page, errorMessage } = await scrapper.getPageInstance(
-      `${MAIN_URL}/${username}/${LIST_TYPES.lists}`
+      `${MAIN_URL}/${username}/${LIST_TYPES.lists}`,
     );
 
     if (status !== QUERY_RESULT_STATUS.ok || !page) {
@@ -51,8 +50,8 @@ export const getUserLists = async ({username}: UserQueryProps) => {
     }
 
     const areThereAnyLists = await scrapper.checkIfSelectorExists(
-      ".list-set",
-      page
+      '.list-set',
+      page,
     );
 
     if (!areThereAnyLists) {
@@ -87,7 +86,7 @@ export const getUserLists = async ({username}: UserQueryProps) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       data: [],
-      errorMessage: ERROR_MESSAGES.try_catch_failed,
+      errorMessage: `${ERROR_MESSAGES.try_catch_failed} - ${error}`,
     } as QueryResponseProps;
   }
 };

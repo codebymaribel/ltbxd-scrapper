@@ -1,5 +1,11 @@
-import scrapper from '../scrapper/scrapper';
 import nameToImdb from 'name-to-imdb';
+
+import {
+  ERROR_MESSAGES,
+  MAIN_URL,
+  QUERY_RESULT_STATUS,
+} from '../config/constants';
+import scrapper from '../scrapper/scrapper';
 import {
   IMDBID,
   ListScrapperProps,
@@ -8,15 +14,10 @@ import {
   PromiseAllSettledProps,
   QueryResponseProps,
 } from '../types';
-import {
-  ERROR_MESSAGES,
-  MAIN_URL,
-  QUERY_RESULT_STATUS,
-} from '../config/constants';
 
 export const listFilms = async (url: string, posters: boolean) => {
   let allDataCollected = false;
-  const listData: Object[] = [];
+  const listData: object[] = [];
 
   try {
     const { status, page, errorMessage } = await scrapper.getPageInstance(url, [
@@ -115,7 +116,7 @@ export const listFilms = async (url: string, posters: boolean) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       data: [],
-      errorMessage: ERROR_MESSAGES.try_catch_failed,
+      errorMessage: `${ERROR_MESSAGES.try_catch_failed} - ${error}`,
     } as QueryResponseProps;
   }
 };
@@ -156,7 +157,7 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
         continue;
       }
 
-      let imdbID: IMDBID = (await searchIMDB(title.value)) as IMDBID;
+      const imdbID: IMDBID = (await searchIMDB(title.value)) as IMDBID;
 
       moviesData.push({
         id: id.value,
@@ -175,7 +176,8 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       data: [],
-    };
+      errorMessage: `${ERROR_MESSAGES.try_catch_failed} - ${error}`,
+    } as QueryResponseProps;
   }
 };
 

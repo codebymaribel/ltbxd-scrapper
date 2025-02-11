@@ -1,17 +1,18 @@
-import puppeteer, { Page } from "puppeteer";
-import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from "../config/constants";
-import { checkIfValidURL } from "../tools/tools";
+import puppeteer, { Page } from 'puppeteer';
+
+import { ERROR_MESSAGES, QUERY_RESULT_STATUS } from '../config/constants';
+import { checkIfValidURL } from '../tools/tools';
 
 const getPageInstance = async (
   url: string,
-  unwantedElements: string[] = []
+  unwantedElements: string[] = [],
 ) => {
   const browser = await puppeteer.launch({
     headless: true,
     args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
     ],
   });
 
@@ -38,7 +39,7 @@ const getPageInstance = async (
   }
 
   try {
-    const urlResponse = await page.goto(url, { waitUntil: "domcontentloaded" });
+    const urlResponse = await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     if (urlResponse?.status() === 404) {
       return {
@@ -58,7 +59,7 @@ const getPageInstance = async (
     return {
       status: QUERY_RESULT_STATUS.error,
       page: null,
-      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+      errorMessage: `${ERROR_MESSAGES.scrapper_method_failed} - ${error}`,
     };
   }
 };
@@ -69,13 +70,13 @@ const closeBrowser = async (page: Page) => {
 
 const gotoNextPage = async (page: Page, url: string) =>
   await page.goto(url, {
-    waitUntil: "domcontentloaded",
+    waitUntil: 'domcontentloaded',
   });
 
-const preventElementLoad = async (page: Page, elements: String[]) => {
+const preventElementLoad = async (page: Page, elements: string[]) => {
   await page.setRequestInterception(true);
 
-  page.on("request", (request) => {
+  page.on('request', (request) => {
     if (elements.indexOf(request.resourceType()) !== -1) {
       return request.abort();
     }
@@ -99,7 +100,7 @@ const checkIfSelectorExists = async (selectorString: string, page: Page) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       response: null,
-      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+      errorMessage: `${ERROR_MESSAGES.scrapper_method_failed} - ${error}`,
     };
   }
 };
@@ -107,7 +108,7 @@ const checkIfSelectorExists = async (selectorString: string, page: Page) => {
 const checkIfContainerHasChildren = async (page: Page) => {
   try {
     const filmElementExists: boolean = await page
-      .$$eval("div.film-poster", (elementsArray) => elementsArray.length > 0)
+      .$$eval('div.film-poster', (elementsArray) => elementsArray.length > 0)
       .catch(() => false);
     return {
       status: QUERY_RESULT_STATUS.ok,
@@ -118,16 +119,16 @@ const checkIfContainerHasChildren = async (page: Page) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       response: null,
-      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+      errorMessage: `${ERROR_MESSAGES.scrapper_method_failed} - ${error}`,
     };
   }
 };
 
 const getNextPageURL = async (page: Page) => {
   try {
-    const nextPageContainer = await page.$("a.next");
+    const nextPageContainer = await page.$('a.next');
     const nextPageLink = nextPageContainer
-      ? await page.evaluate((el) => el.getAttribute("href"), nextPageContainer)
+      ? await page.evaluate((el) => el.getAttribute('href'), nextPageContainer)
       : null;
 
     return {
@@ -139,7 +140,7 @@ const getNextPageURL = async (page: Page) => {
     return {
       status: QUERY_RESULT_STATUS.failed,
       response: null,
-      errorMessage: ERROR_MESSAGES.scrapper_method_failed,
+      errorMessage: `${ERROR_MESSAGES.scrapper_method_failed} - ${error}`,
     };
   }
 };

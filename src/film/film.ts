@@ -1,20 +1,19 @@
-import scrapper from '../scrapper/scrapper';
 import {
   ERROR_MESSAGES,
   MAIN_URL,
   QUERY_RESULT_STATUS,
 } from '../config/constants';
-import { findingMovieTitle } from './functions';
-import { MovieSearchProps, QueryResponseProps } from '../types';
+import scrapper from '../scrapper/scrapper';
 import { formatStringToMovieTitle } from '../tools/tools';
-
+import { MovieSearchProps, QueryResponseProps } from '../types';
+import { findingMovieTitle } from './functions';
 
 /**
  * @summary searches for films results based on a string
  * @param {string} title - film title
  * @returns {object}  {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#film-object | Film Search Object[]} in the data param of the {@link https://github.com/codebymaribel/ltbxd-scrapper?tab=readme-ov-file#options-object | QueryResponseProps}
  */
-export const searchFilm = async ( title: string ) => {
+export const searchFilm = async (title: string) => {
   const formattedTitle = formatStringToMovieTitle(title);
   try {
     const queryTitle = formattedTitle.replace(/ /g, '+');
@@ -46,11 +45,11 @@ export const searchFilm = async ( title: string ) => {
       data: moviesArray,
       errorMessage: null,
     } as QueryResponseProps;
-  } catch (err) {
+  } catch (error) {
     return {
       status: QUERY_RESULT_STATUS.failed,
       data: [],
-      errorMessage: ERROR_MESSAGES.try_catch_failed,
+      errorMessage: `${ERROR_MESSAGES.try_catch_failed} - ${error}`,
     } as QueryResponseProps;
   }
 };

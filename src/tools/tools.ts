@@ -3,35 +3,35 @@ export const clearNullElementsFromArray = (objectsArray) =>
 
 export const formatStringToMovieTitle = (text: string) => {
   const conjunctions = [
-    "for",
-    "of",
-    "on",
-    "and",
-    "nor",
-    "but",
-    "or",
-    "yet",
-    "so",
-    "a",
-    "in",
-    "the",
+    'for',
+    'of',
+    'on',
+    'and',
+    'nor',
+    'but',
+    'or',
+    'yet',
+    'so',
+    'a',
+    'in',
+    'the',
   ];
-  let formattedString: string = "";
+  let formattedString: string = '';
 
   const wordWithCapitalLetter = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-  const wordsArray = text.split(" ");
+  const wordsArray = text.split(' ');
 
   wordsArray.forEach((word, index) => {
     if (index !== 0 && conjunctions.includes(word.toLowerCase())) {
       formattedString = formattedString + word.toLowerCase();
     } else {
-      formattedString = formattedString + wordWithCapitalLetter(word) + "";
+      formattedString = formattedString + wordWithCapitalLetter(word) + '';
     }
 
     if (wordsArray[index + 1]) {
-      formattedString = formattedString + " ";
+      formattedString = formattedString + ' ';
     }
   });
 
@@ -53,16 +53,16 @@ export const wait = (ms: number) => {
  * @returns {Promise}
  */
 export const checkIfValidURL = (url: string) =>
-  url.toLowerCase().includes("letterboxd.com");
+  url.toLowerCase().includes('letterboxd.com');
 
 export const takeScreenshot = async ({ page }) =>
   await page.screenshot({
-    path: "screenshot.jpg",
+    path: 'screenshot.jpg',
   });
 
-export const measureFunctionTime = async(fn, args) => {
+export const measureFunctionTime = async (fn, args) => {
   console.time('Function execution time');
   const result = await fn(args);
   console.timeEnd('Function execution time');
-  return result
-}
+  return result;
+};

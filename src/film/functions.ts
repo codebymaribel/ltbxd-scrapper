@@ -1,7 +1,16 @@
-import scrapper from "../scrapper/scrapper";
-import { ERROR_MESSAGES, MAIN_URL, QUERY_RESULT_STATUS } from "../config/constants";
-import { MovieSearchProps, PromiseAllSettledProps } from "../types";
-import { Page } from "puppeteer";
+import { Page } from 'puppeteer';
+
+import {
+  ERROR_MESSAGES,
+  MAIN_URL,
+  QUERY_RESULT_STATUS,
+} from '../config/constants';
+import scrapper from '../scrapper/scrapper';
+import {
+  MovieSearchProps,
+  PromiseAllSettledProps,
+  QueryResponseProps,
+} from '../types';
 
 export const findingMovieTitle = async (page: Page, title: string) => {
   try {
@@ -10,9 +19,8 @@ export const findingMovieTitle = async (page: Page, title: string) => {
     const selector = `li > div[data-film-name="${title}"]`;
     const checkIfSelectorExists = await scrapper.checkIfSelectorExists(
       selector,
-      page
+      page,
     );
-
 
     if (checkIfSelectorExists.status !== QUERY_RESULT_STATUS.ok)
       return {
@@ -40,11 +48,11 @@ export const findingMovieTitle = async (page: Page, title: string) => {
     for (const movieContainer of moviesWithTitle) {
       const [filmLink, filmPoster] = (await Promise.allSettled([
         await page.evaluate(
-          (el) => el.getAttribute("data-film-link"),
-          movieContainer
+          (el) => el.getAttribute('data-film-link'),
+          movieContainer,
         ),
-        await movieContainer.$eval("div > img", (result) =>
-          result.getAttribute("src")
+        await movieContainer.$eval('div > img', (result) =>
+          result.getAttribute('src'),
         ),
       ])) as PromiseAllSettledProps<string | null>[];
 
@@ -63,11 +71,11 @@ export const findingMovieTitle = async (page: Page, title: string) => {
       data: moviesArray,
       errorMessage: null,
     };
-  } catch (err) {
+  } catch (error) {
     return {
       status: QUERY_RESULT_STATUS.failed,
       data: [],
-      errorMessage: ERROR_MESSAGES.try_catch_failed,
-    };
+      errorMessage: `${ERROR_MESSAGES.try_catch_failed} - ${error}`,
+    } as QueryResponseProps;
   }
 };
