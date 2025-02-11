@@ -140,7 +140,6 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
 
     for (const movie of moviesContainers) {
       let poster: MoviePoster = null;
-      let imdbID: IMDBID = null;
 
       const [id, title, slug] = (await Promise.allSettled([
         await page.evaluate((el) => el.getAttribute('data-film-id'), movie),
@@ -157,15 +156,7 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
         continue;
       }
 
-      try {
-        await nameToImdb({ name: title.value }, (err, res, inf) => {
-          if (!err && inf && res) {
-            imdbID = res;
-          }
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      let imdbID: IMDBID = (await searchIMDB(title.value)) as IMDBID;
 
       moviesData.push({
         id: id.value,
@@ -186,4 +177,15 @@ const getFilmsArray = async ({ page, posters = true }: ListScrapperProps) => {
       data: [],
     };
   }
+};
+
+const searchIMDB = (title: string) => {
+  return new Promise((resolve, reject) =>
+    nameToImdb(title, (err, res) => {
+      if (err) reject(err);
+      else resolve(res);
+    }),
+  )
+    .then((imdbID) => imdbID)
+    .catch(() => null);
 };
